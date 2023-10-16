@@ -23,14 +23,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInvitationById = void 0;
+exports.getAllServiceClientById = void 0;
 const message = __importStar(require("../../../modulo/config"));
-const getInvitationById_1 = require("../../../model/diaristaDAO/getInvitationById");
+const getServiceClientById_1 = require("../../../model/clienteDAO/getServiceClientById");
 const jwt = __importStar(require("jsonwebtoken"));
-const getInvitationById = async function (token, statusService) {
+const getAllServiceClientById = async function (token, status) {
     const SECRETE = message.REQUIRE_SECRETE;
-    const statusTypeService = Number(statusService);
-    if (!isNaN(statusTypeService) && statusTypeService > 5 || statusTypeService < 1) {
+    const statusService = Number(status);
+    if (isNaN(statusService) && statusService > 5 || statusService < 1) {
         return {
             status: 422,
             message: { status: 422, message: "Atenção o id para filtro do tipo de serviço está inválido" }
@@ -38,25 +38,10 @@ const getInvitationById = async function (token, statusService) {
     }
     try {
         const decoded = jwt.verify(Array.isArray(token) ? token[0] : token, SECRETE);
-        const { id } = decoded;
-        let invitation;
-        const statusInvitation = await (0, getInvitationById_1.dbGetInvitation)(Number(id), statusTypeService);
-        if (statusInvitation) {
-            invitation = {
-                status: 200,
-                data: statusInvitation
-            };
-        }
-        else {
-            invitation = {
-                status: 404,
-                data: { status: 404, message: "Nenhum serviço vinculado ao diarista encontrado" }
-            };
-        }
-        return invitation;
+        const { id, name } = decoded;
+        const service = await (0, getServiceClientById_1.dbGetServiceByID)(Number(id), statusService);
     }
     catch (error) {
-        return message.ERRO_INTERNAL_SERVER;
     }
 };
-exports.getInvitationById = getInvitationById;
+exports.getAllServiceClientById = getAllServiceClientById;

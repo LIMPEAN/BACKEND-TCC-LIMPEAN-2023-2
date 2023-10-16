@@ -3,6 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.dbRegisterService = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
+function generateRandomString() {
+    const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let result = '';
+    for (let i = 0; i < 6; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
+    }
+    return result;
+}
 const dbRegisterService = async (token, data) => {
     try {
         let statusDiarist = false;
@@ -38,7 +47,7 @@ const dbRegisterService = async (token, data) => {
             let transaction = await prisma.$transaction(async (prisma) => {
                 const tokenService = await prisma.tbl_token_servico.create({
                     data: {
-                        codigo: "123456"
+                        codigo: generateRandomString()
                     }
                 });
                 const service = await prisma.tbl_servico.create({

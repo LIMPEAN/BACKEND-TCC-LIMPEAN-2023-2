@@ -36,7 +36,10 @@ const controllerDataAllDiarist_1 = require("../../controller/controllerDiarista/
 const controllerDeleteRegisterDiarist_1 = require("../../controller/controllerDiarista/deleteRegisterDiarist/controllerDeleteRegisterDiarist");
 const controllerInvitationById_1 = require("../../controller/controllerDiarista/getAllServiceEspecific/controllerInvitationById");
 const controllerDeleteRegisterClient_1 = require("../../controller/controllerCliente/deleteRegisterClient/controllerDeleteRegisterClient");
+const controllerTokenServiceClient_1 = require("../../controller/controllerCliente/getStatusTokenService/controllerTokenServiceClient");
+const controllerGetServiceClientById_1 = require("../../controller/controllerCliente/getAllServiceCliente/controllerGetServiceClientById");
 const controllerUpdateDataPersonalDiarist_1 = require("../../controller/controllerDiarista/updateDataPersonalDiarist/controllerUpdateDataPersonalDiarist");
+const controllerGetTokenService_1 = require("../../controller/controllerDiarista/getTokenService/controllerGetTokenService");
 const controllerUpdateDataPersonalClient_1 = require("../../controller/controllerCliente/updateDataPersonalClient/controllerUpdateDataPersonalClient");
 const controllerUpdateAddressClient_1 = require("../../controller/controllerCliente/updateDataPersonalClient/controllerUpdateAddressClient");
 const controllerRegisterAddressClient_1 = require("../../controller/controllerCliente/registerAddresClient/controllerRegisterAddressClient");
@@ -134,9 +137,9 @@ router.post('/v1/limpean/client/new/register/address', verifyJWT, jsonParser, as
         }
     }
 });
-router.put('/v1/limpean/client/:residenciaId', verifyJWT, jsonParser, async function (request, response) {
-    const token = request.params.token;
-    const residenciaId = parseInt(request.params.residenciaId);
+router.put('/v1/limpean/client/update/register/address', verifyJWT, jsonParser, async function (request, response) {
+    const token = request.headers['x-api-key'];
+    const residenciaId = request.query.id;
     const dataBody = request.body;
     const statusAddress = await (0, controllerUpdateAddressClient_1.updateDataAddressClient)(token, residenciaId, dataBody);
     response.status(statusAddress.status);
@@ -155,6 +158,20 @@ router.delete('/v1/limpean/client/service/?id', verifyJWT, async function (reque
     const statusService = await (0, controllerDeleterServiceClient_1.deleteServiceClient)(token, idService);
     response.status(statusService.status);
     response.json(statusService);
+});
+router.get('/v1/limpean/client/service', verifyJWT, async function (request, response) {
+    console.log("entr");
+    const statusTypeService = request.query.id;
+    const token = request.headers['x-api-key'];
+    const statusDiarist = await (0, controllerGetServiceClientById_1.getAllServiceClientById)(token, statusTypeService);
+});
+router.get("/v1/limpean/client/service/token", verifyJWT, async function (request, response) {
+    const token = request.headers['x-api-key'];
+    const idService = request.query.idService;
+    const tokenService = request.query.token;
+    const statusToken = await (0, controllerTokenServiceClient_1.getStatusTokenClient)(token, idService, tokenService);
+    response.status(statusToken.status);
+    response.json(statusToken);
 });
 router.get('/v1/limpean/diarists', verifyJWT, async function (request, response) {
     const statusDataDiarist = await (0, controllerDataAllDiarist_1.dataAllDiarist)();
@@ -199,4 +216,11 @@ router.put('/v1/limpean/diarist/schedule-service', verifyJWT, jsonParser, async 
     const statusService = await (0, controllerUpdateStatusService_1.updateStatusService)(data);
     response.status(statusService.status);
     response.json(statusService);
+});
+router.get('/v1/limpean/diarist/service/token', verifyJWT, async function (request, response) {
+    const token = request.headers['x-api-key'];
+    const idService = request.query.idService;
+    const tokenService = await (0, controllerGetTokenService_1.getTokenService)(token, idService);
+    response.status(tokenService.status);
+    response.json(tokenService);
 });

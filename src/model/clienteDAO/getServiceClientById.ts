@@ -2,22 +2,24 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-const dbGetInvitation = async function (id: number, statusTypeService: any) {
-    
+const dbGetServiceByID = async function (id: number, statusTypeService: any) {
+        
     try {
 
-        const service = await prisma.tbl_diarista_servico.findMany({
+        const client = await prisma.tbl_residencia_cliente.findMany({
             where: {
-                id_servico: {
-                    gt: 0,
-                },
-                id_diarista : id
-            },
-            include: {
-                FK_Servico_DiaristaServico: {
-                    select: {
-                        id: true,
-                        data_hora: true,
+                id_cliente: id
+            }
+        })        
+        
+        const service = await prisma.tbl_servico.findMany({
+            where:{
+                id_residencia_cliente: {
+                    in: client.map(it => it.id)
+                }
+            }, select: {
+                id: true,
+                data_hora: true,
                         observacao: true,
                         tarefas_adicionais: true,
                         FK_TipoLimpeza_Servico: {
@@ -43,10 +45,8 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
                                                 nome: true,
                                                 FK_Estado_Cidade: {
                                                     select: {
-                                                        nome: true
-                                                    }
-                                                },
-                                            },
+                                                    nome: true
+                                            }
                                         },
                                     },
                                 },
@@ -59,10 +59,11 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
 
         const serviceClient = []
 
-        for (const it of service) {
+        for (const it of service){
+
             const serviceValue = await prisma.tbl_servico_com_valor.findFirst({
                 where: {
-                    id_servico: it.FK_Servico_DiaristaServico.id,
+                    id_servico: it.id,
                 },
                 select: {
                     valor: true,
@@ -71,7 +72,7 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
 
             const serviceRoom = await prisma.tbl_servico_comodo.findMany({
                 where: {
-                    id_servico: it.FK_Servico_DiaristaServico.id,
+                    id_servico: it.id,
                 },
                 include: {
                     FK_Comodo_ServicoComodo: {
@@ -84,7 +85,7 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
 
             const form = await prisma.tbl_formulario.findMany({
                 where: {
-                    id_servico: it.FK_Servico_DiaristaServico.id,
+                    id_servico: it.id
                 },
                 include: {
                     FK_Perguntas_Formulario: {
@@ -97,7 +98,7 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
 
             const statusService = await prisma.tbl_status_servico.findMany({
                 where: {
-                    id_servico: it.FK_Servico_DiaristaServico.id,
+                    id_servico: it.id,
                 },
                 include: {
                     FK_Status_StatusServico: {
@@ -108,28 +109,20 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
                 }
             })
 
-            const statusAccountClient = await prisma.tbl_status_conta_cliente.findFirst({
-                where: {
-                    id_cliente: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Cliente_Residencia.id,
-                    id_status_conta: 1
-                }
-            })
-
-            if(statusAccountClient)
             serviceClient.push({
-                client: {
+                service: {
                     serviceId: it.id,
                     status_service: statusService.map((it) => ({
                         status: it.FK_Status_StatusServico.nome,
                         data_hora: it.data_hora,
                     })),
-                    name: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Cliente_Residencia.nome,
-                    photo: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Cliente_Residencia.foto_perfil,
-                    biography: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Cliente_Residencia.biografia,
-                    type_clean: it.FK_Servico_DiaristaServico.FK_TipoLimpeza_Servico.nome,
-                    date_hour: it.FK_Servico_DiaristaServico.data_hora,
-                    obeservation: it.FK_Servico_DiaristaServico.observacao,
-                    tasks: it.FK_Servico_DiaristaServico.tarefas_adicionais,
+                    name: it.FK_ResidenciaCliente_Servico.FK_Cliente_Residencia.nome,
+                    photo: it.FK_ResidenciaCliente_Servico.FK_Cliente_Residencia.foto_perfil,
+                    biography: it.FK_ResidenciaCliente_Servico.FK_Cliente_Residencia.biografia,
+                    type_clean: it.FK_TipoLimpeza_Servico.nome,
+                    date_hour: it.data_hora,
+                    obeservation: it.observacao,
+                    tasks: it.tarefas_adicionais,
                     value: serviceValue?.valor,
                     question: form.map((it) => ({
                         asks: it.FK_Perguntas_Formulario.pergunta,
@@ -140,14 +133,14 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
                         quantity: it.quantidade,
                     })),
                     address:{
-                        state: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.FK_Cidade_Endereco.FK_Estado_Cidade.nome,
-                        city: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.FK_Cidade_Endereco.nome,
-                        cep: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.cep
+                        state: it.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.FK_Cidade_Endereco.FK_Estado_Cidade.nome,
+                        city: it.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.FK_Cidade_Endereco.nome,
+                        cep: it.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.FK_Cidade_Endereco.nome
                     }, 
                 },
-            })            
+            })
         }
-        
+
         if (!isNaN(statusTypeService)) {
             let filterService = ""
           
@@ -164,7 +157,7 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
             }
           
             const filterStatusServiceById = serviceClient.filter((client) => {
-              const statusArray = client.client.status_service;
+              const statusArray = client.service.status_service;
               
               // Encontrar o índice do status atual no array
               const currentIndex = statusArray.findIndex(
@@ -179,14 +172,11 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
             })
           
             return filterStatusServiceById;
-          }          
-          
-        if(serviceClient.length > 0){            
-            return serviceClient
-        }else{            
-            return false
-        }
-    } catch (error) {
+          }
+
+        return serviceClient
+        
+    } catch (error) {        
         return false
     }
     finally {
@@ -195,5 +185,5 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
 }
 
 export {
-    dbGetInvitation
+    dbGetServiceByID
 }

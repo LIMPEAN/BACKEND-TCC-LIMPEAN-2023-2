@@ -31,6 +31,12 @@ const jwt = __importStar(require("jsonwebtoken"));
 const updateDataAddressClient = async function (token, residenciaId, data) {
     const SECRETE = message.REQUIRE_SECRETE;
     try {
+        if (!Number(residenciaId)) {
+            return {
+                status: 422,
+                message: "O id do endereço deve ser um número."
+            };
+        }
         const decoded = jwt.verify(Array.isArray(token) ? token[0] : token, SECRETE);
         const { id, name } = decoded;
         const tokenDecoded = { id, name };
@@ -39,7 +45,7 @@ const updateDataAddressClient = async function (token, residenciaId, data) {
         }
         const addressData = (0, dataPersonalAddress_1.createStructureSimpleDataAddress)(data);
         if (addressData) {
-            const updateAddress = await db.updateDataAddressClient(tokenDecoded, residenciaId, addressData);
+            const updateAddress = await db.updateDataAddressClient(tokenDecoded, Number(residenciaId), addressData);
             if (!updateAddress) {
                 return message.ERRO_UPDATE_ADDRESS_CLIENT;
             }

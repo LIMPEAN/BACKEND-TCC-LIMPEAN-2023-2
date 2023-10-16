@@ -11,6 +11,7 @@ import { deleteRegisterDiarist } from "../../controller/controllerDiarista/delet
 import { getInvitationById } from "../../controller/controllerDiarista/getAllServiceEspecific/controllerInvitationById"
 import { deleteRegisterClient } from "../../controller/controllerCliente/deleteRegisterClient/controllerDeleteRegisterClient"
 import { getStatusTokenClient } from "../../controller/controllerCliente/getStatusTokenService/controllerTokenServiceClient"
+import { getAllServiceClientById } from "../../controller/controllerCliente/getAllServiceCliente/controllerGetServiceClientById"
 import { updateDataDiarist } from "../../controller/controllerDiarista/updateDataPersonalDiarist/controllerUpdateDataPersonalDiarist"
 import { getTokenService } from "../../controller/controllerDiarista/getTokenService/controllerGetTokenService"
 import { updateDataClient } from "../../controller/controllerCliente/updateDataPersonalClient/controllerUpdateDataPersonalClient"
@@ -135,7 +136,7 @@ router.delete('/v1/limpean/client', verifyJWT, async function (request, response
 })
 
 //EndPoint responsavel por pegar todos os serviços abertos dos clientes
-router.get('/v1/limpean/client/service', verifyJWT, async function (request, response){
+router.get('/v1/limpean/client/service-open', verifyJWT, async function (request, response){
             
         const statusService = await getDataAllServiceOpen()
         
@@ -227,7 +228,20 @@ router.delete('/v1/limpean/client/service/?id', verifyJWT, async function (reque
 
 })
 
+//EndPoint para listar todos os servicos do cliente e os tipos de status: Convite, Em andamento ....
+router.get('/v1/limpean/client/service', verifyJWT, async function (request, response){
+        
+    const statusTypeService = request.query.id
 
+    const token = request.headers['x-api-key']
+
+    const statusDiarist = await getAllServiceClientById(token as string, statusTypeService) 
+    response.status(statusDiarist.status)
+    response.json(statusDiarist)
+    
+})
+
+//EndPoint para pegar o token do serviço
 router.get("/v1/limpean/client/service/token", verifyJWT, async function(request, response){
 
     const token = request.headers['x-api-key']

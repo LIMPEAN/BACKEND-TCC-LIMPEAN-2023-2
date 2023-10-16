@@ -23,40 +23,46 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInvitationById = void 0;
+exports.getStatusTokenClient = void 0;
 const message = __importStar(require("../../../modulo/config"));
-const getInvitationById_1 = require("../../../model/diaristaDAO/getInvitationById");
 const jwt = __importStar(require("jsonwebtoken"));
-const getInvitationById = async function (token, statusService) {
+const getStatusTokenClient_1 = require("../../../model/clienteDAO/getStatusTokenClient");
+const getStatusTokenClient = async function (tokenClient, idService, tokenService) {
     const SECRETE = message.REQUIRE_SECRETE;
-    const statusTypeService = Number(statusService);
-    if (!isNaN(statusTypeService) && statusTypeService > 5 || statusTypeService < 1) {
+    if (!Number(idService)) {
         return {
             status: 422,
-            message: { status: 422, message: "Atenção o id para filtro do tipo de serviço está inválido" }
+            message: "O token do serviço deve ser um número"
+        };
+    }
+    else if (tokenClient === null || tokenClient.length < 6) {
+        return {
+            status: 422,
+            message: "Informe o token do serviço"
         };
     }
     try {
-        const decoded = jwt.verify(Array.isArray(token) ? token[0] : token, SECRETE);
-        const { id } = decoded;
-        let invitation;
-        const statusInvitation = await (0, getInvitationById_1.dbGetInvitation)(Number(id), statusTypeService);
-        if (statusInvitation) {
-            invitation = {
-                status: 200,
-                data: statusInvitation
+        const decoded = jwt.verify(tokenClient, SECRETE);
+        const { id, name } = decoded;
+        const statusTokenService = await (0, getStatusTokenClient_1.dbVerifyTokenService)(Number(id), Number(idService), tokenService);
+        if (typeof statusTokenService === "number" && statusTokenService === 500) {
+            return message.ERRO_INTERNAL_SERVER;
+        }
+        else if (statusTokenService) {
+            return {
+                status: 201,
+                message: "Token verificado com sucesso."
             };
         }
         else {
-            invitation = {
-                status: 404,
-                data: { status: 404, message: "Nenhum serviço vinculado ao diarista encontrado" }
+            return {
+                status: 401,
+                message: "Dados incorretos, verifique as informações do cliente e do diarista e tente novamente."
             };
         }
-        return invitation;
     }
     catch (error) {
         return message.ERRO_INTERNAL_SERVER;
     }
 };
-exports.getInvitationById = getInvitationById;
+exports.getStatusTokenClient = getStatusTokenClient;

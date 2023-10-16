@@ -11,8 +11,8 @@ const getInvitationById = async function (token: string, statusService: any) {
 
     if(!isNaN(statusTypeService) && statusTypeService > 5 || statusTypeService < 1){
         return {
-            status: 500,
-            message: {status: 500, message: "Atenção o id para filtro do tipo de serviço está inválido"}
+            status: 422,
+            message: {status: 422, message: "Atenção o id para filtro do tipo de serviço está inválido"}
         }
     }
 
