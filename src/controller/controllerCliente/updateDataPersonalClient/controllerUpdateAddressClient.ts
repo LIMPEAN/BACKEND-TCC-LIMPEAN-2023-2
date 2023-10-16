@@ -19,10 +19,18 @@ interface TokenPayLoad {
     name: string;
 }
 
-const updateDataAddressClient = async function (token: string, residenciaId: number, data: UpdateDataAddress) {
+const updateDataAddressClient = async function (token: string, residenciaId: string, data: UpdateDataAddress) {
     const SECRETE = message.REQUIRE_SECRETE;
 
     try {
+
+        if(!Number(residenciaId)){
+            return {
+                status: 422,
+                message: "O id do endereço deve ser um número."
+            }
+        }
+
         const decoded = jwt.verify(Array.isArray(token) ? token[0] : token, SECRETE) as TokenPayLoad
         const { id, name } = decoded;
 
@@ -35,7 +43,7 @@ const updateDataAddressClient = async function (token: string, residenciaId: num
         const addressData = createStructureSimpleDataAddress(data);
 
         if (addressData) {
-            const updateAddress = await db.updateDataAddressClient(tokenDecoded, residenciaId, addressData); 
+            const updateAddress = await db.updateDataAddressClient(tokenDecoded, Number(residenciaId), addressData); 
             
             if (!updateAddress) {
                 return message.ERRO_UPDATE_ADDRESS_CLIENT;

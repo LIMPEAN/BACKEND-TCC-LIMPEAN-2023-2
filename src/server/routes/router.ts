@@ -190,13 +190,13 @@ router.post('/v1/limpean/client/new/register/address', verifyJWT, jsonParser, as
 })
 
 //EndPoint para atualizar um endereço específico da residencia do cliente
-router.put('/v1/limpean/client/:residenciaId', verifyJWT, jsonParser, async function (request, response) {
-
-        const token = request.params.token
-        const residenciaId = parseInt(request.params.residenciaId)
+router.put('/v1/limpean/client/update/register/address', verifyJWT, jsonParser, async function (request, response) {
+    
+        const token = request.headers['x-api-key']
+        const residenciaId = request.query.id
         const dataBody = request.body
 
-        const statusAddress = await updateDataAddressClient(token, residenciaId, dataBody)
+        const statusAddress = await updateDataAddressClient(token as string, residenciaId as string, dataBody)
 
         response.status(statusAddress.status)
         response.json(statusAddress)
