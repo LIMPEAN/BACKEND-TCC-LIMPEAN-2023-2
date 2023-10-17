@@ -18,7 +18,7 @@ const registerAssessmentDiarist = async function(token: string, data: Assessemen
         if(statusAssessementClient === 404){
             return {
                 status: 404,
-                message: "Erro verifique se o cliente ou diarista existe e tente novamente."
+                message: "Erro verifique se o cliente ou diarista existe e tente novamente. Obs: Não é permitido cadastrar duas vezes a mesma avaliação."
             }
         }else if(statusAssessementClient){
             return {

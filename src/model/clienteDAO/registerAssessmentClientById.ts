@@ -22,7 +22,15 @@ const dbRegisterAssessmentClient = async function(token: Token, data: Assessemen
             }
         })
 
-        if(verifyClient && verifyDiarist){
+        const verifyRegisterAssessment = await prisma.tbl_avaliacao_cliente.findFirst({
+            where: {
+                id_diarista: verifyDiarist?.id,
+                id_cliente: verifyClient?.id,
+                data_hora: `${data.date}T${data.hour}:00Z`
+            }
+        })
+
+        if(verifyClient && verifyDiarist && !verifyRegisterAssessment){
 
             const registerAssessmentDiarist = await prisma.tbl_avaliacao_diarista.create({
                 data: {
