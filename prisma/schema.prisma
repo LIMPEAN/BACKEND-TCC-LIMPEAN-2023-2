@@ -95,7 +95,8 @@ model tbl_cliente {
   residencia           tbl_residencia_cliente[]
   telefone             tbl_telefone_cliente[]
   statusCliente        tbl_status_conta_cliente[]
-  avaliacaoClinete     tbl_avaliacao_cliente[]
+  avaliacaoCliente     tbl_avaliacao_cliente[]
+  avaliacaoDiarista    tbl_avaliacao_diarista[]
 
   FK_Genero_Cliente    tbl_genero @relation(fields: [id_genero], references: [id])
 
@@ -130,6 +131,7 @@ model tbl_diarista{
   statusContaDiarista  tbl_status_conta_diarista[]
   diaristaServico      tbl_diarista_servico[]
   avaliacaoDiarista    tbl_avaliacao_diarista[]
+  avaliacaoCliente     tbl_avaliacao_cliente[]
 
   FK_Endereco_Diarista tbl_endereco @relation(fields: [id_endereco], references: [id])
   FK_Genero_Diarista   tbl_genero   @relation(fields: [id_genero], references: [id])
@@ -358,12 +360,14 @@ model tbl_tipo_limpeza {
 
 model tbl_avaliacao_diarista {
   id                  Int @id @default(autoincrement())
-  comentario          String? @db.VarChar(300)
-  quantidade_estrelas String? @db.VarChar(30)
+  comentario          String?  @db.VarChar(300)
+  quantidade_estrelas Int  
+  data_hora           DateTime @db.DateTime()
   id_diarista         Int
+  id_client           Int
 
   FK_Diarista_AvaliacaoDiarista tbl_diarista @relation(fields: [id_diarista], references: [id])
-
+  FK_Cliente_AvaliacaoDiarista  tbl_cliente @relation(fields: [id_client], references: [id])
   @@unique([id])
 }
 
@@ -371,10 +375,12 @@ model tbl_avaliacao_diarista {
 model tbl_avaliacao_cliente {
   id                  Int @id @default(autoincrement())
   comentario          String? @db.VarChar(300)
-  quantidade_estrelas String? @db.VarChar(30)
-  id_cliente         Int
+  quantidade_estrelas Int 
+  id_cliente          Int
+  id_diarista         Int
 
-  FK_Cliente_AvaliacaoDiarista tbl_cliente @relation(fields: [id_cliente], references: [id])
+  FK_Cliente_AvaliacaoCliente tbl_cliente @relation(fields: [id_cliente], references: [id])
+  FK_Diarista_AvaliacaoCliente tbl_diarista @relation(fields: [id_diarista], references: [id])
 
   @@unique([id])
 }

@@ -5,6 +5,7 @@ import { Router, Request, Response, NextFunction } from "express"
 import bodyParser from 'body-parser'
 import { loginTypeUser } from "../../controller/controllerUser/login/loginTypeUser"
 import { registerTypeUser } from "../../controller/controllerUser/register/registerTypeUser"
+import { assessmentTypeUser } from "../../controller/controllerUser/assessment/assessmentTypeUser"
 import { dataDiaristById } from "../../controller/controllerDiarista/dataDiarist/controllerDataDiaristById"
 import { dataAllDiarist } from "../../controller/controllerDiarista/dataDiarist/controllerDataAllDiarist"
 import { deleteRegisterDiarist } from "../../controller/controllerDiarista/deleteRegisterDiarist/controllerDeleteRegisterDiarist"
@@ -98,6 +99,18 @@ router.post('/v1/limpean/login', jsonParser, async function (request, response) 
             response.send(message.ERRO_INTERNAL_SERVER)
         }
     }
+})
+
+/******************************************** Avaliação do Cliente e do Diarista *************************/
+
+router.post('/v1/limpean/assessment', jsonParser, verifyJWT, async function (request, response){
+    
+    const token = request.headers['x-api-key']
+    const dataBody = request.body
+
+    const statusAssessment = await assessmentTypeUser(token as string, dataBody)
+    response.status(statusAssessment.status)
+    response.json(statusAssessment)
 })
 
 /***************************************** Cliente ***********************************************************/

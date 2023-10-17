@@ -304,8 +304,10 @@ CREATE TABLE `tbl_tipo_limpeza` (
 CREATE TABLE `tbl_avaliacao_diarista` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `comentario` VARCHAR(300) NULL,
-    `quantidade_estrelas` VARCHAR(30) NULL,
+    `quantidade_estrelas` INTEGER NOT NULL,
+    `data_hora` DATETIME NOT NULL,
     `id_diarista` INTEGER NOT NULL,
+    `id_client` INTEGER NOT NULL,
 
     UNIQUE INDEX `tbl_avaliacao_diarista_id_key`(`id`),
     PRIMARY KEY (`id`)
@@ -315,8 +317,9 @@ CREATE TABLE `tbl_avaliacao_diarista` (
 CREATE TABLE `tbl_avaliacao_cliente` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `comentario` VARCHAR(300) NULL,
-    `quantidade_estrelas` VARCHAR(30) NULL,
+    `quantidade_estrelas` INTEGER NOT NULL,
     `id_cliente` INTEGER NOT NULL,
+    `id_diarista` INTEGER NOT NULL,
 
     UNIQUE INDEX `tbl_avaliacao_cliente_id_key`(`id`),
     PRIMARY KEY (`id`)
@@ -413,4 +416,10 @@ ALTER TABLE `tbl_formulario` ADD CONSTRAINT `tbl_formulario_id_perguntas_fkey` F
 ALTER TABLE `tbl_avaliacao_diarista` ADD CONSTRAINT `tbl_avaliacao_diarista_id_diarista_fkey` FOREIGN KEY (`id_diarista`) REFERENCES `tbl_diarista`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `tbl_avaliacao_diarista` ADD CONSTRAINT `tbl_avaliacao_diarista_id_client_fkey` FOREIGN KEY (`id_client`) REFERENCES `tbl_cliente`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `tbl_avaliacao_cliente` ADD CONSTRAINT `tbl_avaliacao_cliente_id_cliente_fkey` FOREIGN KEY (`id_cliente`) REFERENCES `tbl_cliente`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `tbl_avaliacao_cliente` ADD CONSTRAINT `tbl_avaliacao_cliente_id_diarista_fkey` FOREIGN KEY (`id_diarista`) REFERENCES `tbl_diarista`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
