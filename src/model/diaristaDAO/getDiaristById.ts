@@ -70,41 +70,51 @@ const getDiaristById = async function (id: number) {
                 where: {
                     id_diarista: it.id
                 },select: {
+                    data_hora: true,
                     comentario: true,
-                    quantidade_estrelas: true
+                    quantidade_estrelas: true,
+                    FK_Cliente_AvaliacaoDiarista: {
+                        select: {
+                            nome: true,
+                            foto_perfil: true
+                        }
+                    }
                 }
             })
 
             diarist.push({
                 user: {
                     id_diarist: it.id,
-                    status_Conta: dataStatusRegisterDiarist.map((it) =>({
+                    statusAccount: dataStatusRegisterDiarist.map((it) =>({
                         data: it.data_status,
                         status: it.FK_StatusConta_StatusContaDiarista.status
                     })),
-                    nome: it.nome,
+                    name: it.nome,
                     cpf: it.cpf,
-                    data_nascimento: it.data_nascimento,
-                    biografia: it.biografia,
-                    foto_perfil: it.foto_perfil,
+                    birthDate: it.data_nascimento,
+                    biography: it.biografia,
+                    photoProfile: it.foto_perfil,
                     email: it.email,
-                    media_valor: it.media_valor,
-                    genero: it.FK_Genero_Diarista.nome,
+                    medium_value: it.media_valor,
+                    gender: it.FK_Genero_Diarista.nome,
                     assessment: assessementDiarist.map((it) =>({
+                        name: it.FK_Cliente_AvaliacaoDiarista.nome,
+                        photo: it.FK_Cliente_AvaliacaoDiarista.foto_perfil,
                         stars: it.quantidade_estrelas,
-                        comment: it.comentario
+                        comment: it.comentario,
+                        dataHour: it.data_hora
                     })),
-                    telefone: dataPhoneDiarist.map((it) => ({
+                    phone: dataPhoneDiarist.map((it) => ({
                         ddd: it.ddd,
-                        numero: it.numero_telefone
+                        number_phone: it.numero_telefone
                     })),
                     address: [{
                         state: it.FK_Endereco_Diarista.FK_Cidade_Endereco.FK_Estado_Cidade.nome,
                         city: it.FK_Endereco_Diarista.FK_Cidade_Endereco.nome,
-                        logradouro: it.FK_Endereco_Diarista.logradouro,
-                        bairro: it.FK_Endereco_Diarista.bairro,
+                        publicPlace: it.FK_Endereco_Diarista.logradouro,
+                        district: it.FK_Endereco_Diarista.bairro,
                         cep: it.FK_Endereco_Diarista.cep,
-                        complento: it.FK_Endereco_Diarista.complemento
+                        complement: it.FK_Endereco_Diarista.complemento
                     }]
                 }
             })

@@ -318,6 +318,7 @@ CREATE TABLE `tbl_avaliacao_cliente` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `comentario` VARCHAR(300) NULL,
     `quantidade_estrelas` INTEGER NOT NULL,
+    `data_hora` DATETIME NOT NULL,
     `id_cliente` INTEGER NOT NULL,
     `id_diarista` INTEGER NOT NULL,
 

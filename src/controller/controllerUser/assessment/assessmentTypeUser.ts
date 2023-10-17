@@ -1,6 +1,7 @@
 import * as message from "../../../modulo/config"
 import { Assessement } from "./interface/assessment"
 import {registerAssessmentClient} from "../../controllerCliente/registerAssessmentClient/controllerRegisterAssessmentClient"
+import { registerAssessmentDiarist } from "../../controllerDiarista/registerAssementDiarist/controllerRegisterAssessmentDiarist";
 
 function validateHour(data: string) {
     const regexHora = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
@@ -44,7 +45,7 @@ const assessmentTypeUser = async function(token: string, data: Assessement){
             statusAssessment = await registerAssessmentClient(token, data)
             
         }else if(data.typeUser.toLowerCase() === "diarist"){
-            statusAssessment = await registerAssessmentClient(token, data)
+            statusAssessment = await registerAssessmentDiarist(token, data)
         }else{
             statusAssessment = {
                 status: 422,

@@ -21,11 +21,6 @@ const dbVerifyTokenService = async function(idClient: number, idService: number,
                 }
             }
         })    
-
-        console.log(token);
-        console.log(serviceClient?.FK_TokenServico_Servico.codigo);
-        
-        
         
         if(
              serviceClient && serviceClient.FK_ResidenciaCliente_Servico.id_cliente === idClient &&

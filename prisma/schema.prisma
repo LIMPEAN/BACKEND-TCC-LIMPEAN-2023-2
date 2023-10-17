@@ -376,6 +376,7 @@ model tbl_avaliacao_cliente {
   id                  Int @id @default(autoincrement())
   comentario          String? @db.VarChar(300)
   quantidade_estrelas Int 
+  data_hora           DateTime @db.DateTime()
   id_cliente          Int
   id_diarista         Int
 

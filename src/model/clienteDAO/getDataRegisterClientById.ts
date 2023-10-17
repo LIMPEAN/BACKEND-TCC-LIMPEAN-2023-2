@@ -47,8 +47,15 @@ const getDataRegisterClientById = async function (id: number, name: string) {
             where: {
                 id_cliente: id,
             }, select: {
+                data_hora: true,
                 comentario: true,
-                quantidade_estrelas: true
+                quantidade_estrelas: true,
+                FK_Diarista_AvaliacaoCliente: {
+                    select: {
+                        nome: true,
+                        foto_perfil: true
+                    }
+                }
             }
         })
 
@@ -108,8 +115,11 @@ const getDataRegisterClientById = async function (id: number, name: string) {
                     numero: it.numero_telefone
                 })),
                 assessement: assessmentClient.map((it) => ({
+                    name: it.FK_Diarista_AvaliacaoCliente.nome,
+                    photo: it.FK_Diarista_AvaliacaoCliente.foto_perfil,
                     stars: it.quantidade_estrelas,
-                    comment: it.comentario
+                    comment: it.comentario,
+                    dataHour: it.data_hora
                 })),
                 endereco: address.map((it) => ({
                     id_address: it.FK_Endereco_Residencia.id,
