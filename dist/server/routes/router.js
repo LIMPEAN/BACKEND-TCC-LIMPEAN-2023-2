@@ -39,6 +39,7 @@ const controllerInvitationById_1 = require("../../controller/controllerDiarista/
 const controllerDeleteRegisterClient_1 = require("../../controller/controllerCliente/deleteRegisterClient/controllerDeleteRegisterClient");
 const controllerTokenServiceClient_1 = require("../../controller/controllerCliente/getStatusTokenService/controllerTokenServiceClient");
 const controllerGetServiceClientById_1 = require("../../controller/controllerCliente/getAllServiceCliente/controllerGetServiceClientById");
+const controllerRegisterTransactionService_1 = require("../../controller/controllerCliente/registerTransactionService/controllerRegisterTransactionService");
 const controllerUpdateDataPersonalDiarist_1 = require("../../controller/controllerDiarista/updateDataPersonalDiarist/controllerUpdateDataPersonalDiarist");
 const controllerGetTokenService_1 = require("../../controller/controllerDiarista/getTokenService/controllerGetTokenService");
 const controllerUpdateDataPersonalClient_1 = require("../../controller/controllerCliente/updateDataPersonalClient/controllerUpdateDataPersonalClient");
@@ -163,6 +164,9 @@ router.post('/v1/limpean/client/cadastro/servico', verifyJWT, jsonParser, async 
 router.post('/v1/limpean/client/register/transaction', verifyJWT, jsonParser, async function (request, response) {
     const token = request.headers['x-api-key'];
     const dataBody = request.body;
+    const statusService = await (0, controllerRegisterTransactionService_1.registerTransaction)(token, dataBody);
+    response.status(statusService.status);
+    response.json(statusService);
 });
 router.delete('/v1/limpean/client/service/?id', verifyJWT, async function (request, response) {
     const token = request.headers['x-api-key'];

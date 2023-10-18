@@ -109,6 +109,20 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                 }
             })
 
+            const transaction = await prisma.tbl_transacao.findFirst({
+                where: {
+                    id_servico: it.id
+                }, select: {
+                    valor: true,
+                    comprovante: true,
+                    FK_TipoTransacao_Transacao: {
+                        select: {
+                            nome: true
+                        }
+                    }
+                }
+            })
+
             serviceClient.push({
                 service: {
                     serviceId: it.id,
@@ -137,6 +151,11 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                         city: it.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.FK_Cidade_Endereco.nome,
                         cep: it.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.FK_Cidade_Endereco.nome
                     }, 
+                    registerTransaction: {
+                        value: transaction?.valor,
+                        receipt: transaction?.comprovante,
+                        typeTransaction: transaction?.FK_TipoTransacao_Transacao.nome
+                    }
                 },
             })
         }

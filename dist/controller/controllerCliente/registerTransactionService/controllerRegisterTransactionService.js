@@ -23,6 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.registerTransaction = void 0;
 const message = __importStar(require("../../../modulo/config"));
 const validateRegisterTransaction_1 = require("./validate/validateRegisterTransaction");
 const registerTransactionClientById_1 = require("../../../model/clienteDAO/registerTransactionClientById");
@@ -45,20 +46,28 @@ const registerTransaction = async function (token, data) {
             id: id,
             name: name
         };
-        const statusTransaction = (0, registerTransactionClientById_1.dbRegisterTransactionService)(decodedToken, data);
+        const statusTransaction = await (0, registerTransactionClientById_1.dbRegisterTransactionService)(decodedToken, data);
         if (typeof statusTransaction === "number" && statusTransaction === 404) {
             return {
                 status: 422,
                 message: "Erro, verique se o id do serviço pertence ao cliente e tente novamente."
             };
         }
-        else if (typeof statusTransaction === "boolean" && statusTransaction) {
+        else if (typeof statusTransaction === "boolean" && statusTransaction === true) {
             return {
                 status: 201,
                 message: "Registro salvo com sucesso"
             };
         }
+        else {
+            return {
+                status: 422,
+                message: "Atenção verifique os dados e tente novamente. Obs: Será possivel cadastrar apenas 1 comprovante por serviço."
+            };
+        }
     }
     catch (error) {
+        return message.ERRO_INTERNAL_SERVER;
     }
 };
+exports.registerTransaction = registerTransaction;
