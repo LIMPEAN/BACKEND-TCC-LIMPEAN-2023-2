@@ -23,27 +23,27 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllServiceClientById = void 0;
+exports.registerAssessmentDiarist = void 0;
 const message = __importStar(require("../../../modulo/config"));
-const getServiceClientById_1 = require("../../../model/clienteDAO/getServiceClientById");
+const registerAssessmentDiaristById_1 = require("../../../model/diaristaDAO/registerAssessmentDiaristById");
 const jwt = __importStar(require("jsonwebtoken"));
-const getAllServiceClientById = async function (token, status) {
+const registerAssessmentDiarist = async function (token, data) {
     const SECRETE = message.REQUIRE_SECRETE;
-    const statusService = Number(status);
-    if (isNaN(statusService) && statusService > 5 || statusService < 1) {
-        return {
-            status: 422,
-            message: { status: 422, message: "Atenção o id para filtro do tipo de serviço está inválido" }
-        };
-    }
     try {
-        const decoded = jwt.verify(Array.isArray(token) ? token[0] : token, SECRETE);
+        const decoded = jwt.verify(token, SECRETE);
         const { id, name } = decoded;
-        const service = await (0, getServiceClientById_1.dbGetServiceByID)(Number(id), statusService);
-        if (service) {
+        const tokenDecoded = { id, name };
+        const statusAssessementClient = await (0, registerAssessmentDiaristById_1.dbRegisterAssessmentDiarist)(tokenDecoded, data);
+        if (statusAssessementClient === 404) {
+            return {
+                status: 404,
+                message: "Erro verifique se o cliente ou diarista existe e tente novamente. Obs: Não é permitido cadastrar duas vezes a mesma avaliação."
+            };
+        }
+        else if (statusAssessementClient) {
             return {
                 status: 201,
-                data: service
+                message: message.CREATED_REGISTER
             };
         }
         else {
@@ -54,4 +54,4 @@ const getAllServiceClientById = async function (token, status) {
         return message.ERRO_INTERNAL_SERVER;
     }
 };
-exports.getAllServiceClientById = getAllServiceClientById;
+exports.registerAssessmentDiarist = registerAssessmentDiarist;

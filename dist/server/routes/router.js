@@ -31,6 +31,7 @@ const express_1 = require("express");
 const body_parser_1 = __importDefault(require("body-parser"));
 const loginTypeUser_1 = require("../../controller/controllerUser/login/loginTypeUser");
 const registerTypeUser_1 = require("../../controller/controllerUser/register/registerTypeUser");
+const assessmentTypeUser_1 = require("../../controller/controllerUser/assessment/assessmentTypeUser");
 const controllerDataDiaristById_1 = require("../../controller/controllerDiarista/dataDiarist/controllerDataDiaristById");
 const controllerDataAllDiarist_1 = require("../../controller/controllerDiarista/dataDiarist/controllerDataAllDiarist");
 const controllerDeleteRegisterDiarist_1 = require("../../controller/controllerDiarista/deleteRegisterDiarist/controllerDeleteRegisterDiarist");
@@ -98,13 +99,20 @@ router.post('/v1/limpean/login', jsonParser, async function (request, response) 
         }
     }
 });
+router.post('/v1/limpean/assessment', jsonParser, verifyJWT, async function (request, response) {
+    const token = request.headers['x-api-key'];
+    const dataBody = request.body;
+    const statusAssessment = await (0, assessmentTypeUser_1.assessmentTypeUser)(token, dataBody);
+    response.status(statusAssessment.status);
+    response.json(statusAssessment);
+});
 router.delete('/v1/limpean/client', verifyJWT, async function (request, response) {
     const token = request.headers['x-api-key'];
     const statusClient = await (0, controllerDeleteRegisterClient_1.deleteRegisterClient)(token);
     response.status(statusClient.status);
     response.json(statusClient);
 });
-router.get('/v1/limpean/client/service', verifyJWT, async function (request, response) {
+router.get('/v1/limpean/client/service-open', verifyJWT, async function (request, response) {
     const statusService = await (0, controllerDataAllServiceOpenClients_1.getDataAllServiceOpen)();
     response.status(statusService.status);
     response.json(statusService);
@@ -152,6 +160,10 @@ router.post('/v1/limpean/client/cadastro/servico', verifyJWT, jsonParser, async 
     response.status(statusService.status);
     response.json(statusService);
 });
+router.post('/v1/limpean/client/register/transaction', verifyJWT, jsonParser, async function (request, response) {
+    const token = request.headers['x-api-key'];
+    const dataBody = request.body;
+});
 router.delete('/v1/limpean/client/service/?id', verifyJWT, async function (request, response) {
     const token = request.headers['x-api-key'];
     const idService = request.query.service;
@@ -160,10 +172,11 @@ router.delete('/v1/limpean/client/service/?id', verifyJWT, async function (reque
     response.json(statusService);
 });
 router.get('/v1/limpean/client/service', verifyJWT, async function (request, response) {
-    console.log("entr");
     const statusTypeService = request.query.id;
     const token = request.headers['x-api-key'];
     const statusDiarist = await (0, controllerGetServiceClientById_1.getAllServiceClientById)(token, statusTypeService);
+    response.status(statusDiarist.status);
+    response.json(statusDiarist);
 });
 router.get("/v1/limpean/client/service/token", verifyJWT, async function (request, response) {
     const token = request.headers['x-api-key'];

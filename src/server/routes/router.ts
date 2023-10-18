@@ -13,6 +13,7 @@ import { getInvitationById } from "../../controller/controllerDiarista/getAllSer
 import { deleteRegisterClient } from "../../controller/controllerCliente/deleteRegisterClient/controllerDeleteRegisterClient"
 import { getStatusTokenClient } from "../../controller/controllerCliente/getStatusTokenService/controllerTokenServiceClient"
 import { getAllServiceClientById } from "../../controller/controllerCliente/getAllServiceCliente/controllerGetServiceClientById"
+import { registerTransaction } from "../../controller/controllerCliente/registerTransactionService/controllerRegisterTransactionService"
 import { updateDataDiarist } from "../../controller/controllerDiarista/updateDataPersonalDiarist/controllerUpdateDataPersonalDiarist"
 import { getTokenService } from "../../controller/controllerDiarista/getTokenService/controllerGetTokenService"
 import { updateDataClient } from "../../controller/controllerCliente/updateDataPersonalClient/controllerUpdateDataPersonalClient"
@@ -227,6 +228,17 @@ router.post('/v1/limpean/client/cadastro/servico', verifyJWT, jsonParser, async 
         response.status(statusService.status)
         response.json(statusService)
 
+})
+
+router.post('/v1/limpean/client/register/transaction', verifyJWT, jsonParser, async function (request, response){
+
+    const token = request.headers['x-api-key']
+    const dataBody = request.body
+
+    const statusService = await registerTransaction(token as string, dataBody)
+    response.status(statusService.status)
+    response.json(statusService)
+    
 })
 
 //EndPoint para deletar o servico de um cliente

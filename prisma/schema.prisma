@@ -240,7 +240,6 @@ model tbl_diarista_servico{
 model tbl_transacao {
   id               Int @id @default(autoincrement())
   valor            String @db.VarChar(45)
-  tipo             String @db.VarChar(45) 
   comprovante      String @db.Text
   id_servico       Int
   id_tipo_trasacao Int

@@ -23,35 +23,42 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllServiceClientById = void 0;
 const message = __importStar(require("../../../modulo/config"));
-const getServiceClientById_1 = require("../../../model/clienteDAO/getServiceClientById");
+const validateRegisterTransaction_1 = require("./validate/validateRegisterTransaction");
+const registerTransactionClientById_1 = require("../../../model/clienteDAO/registerTransactionClientById");
 const jwt = __importStar(require("jsonwebtoken"));
-const getAllServiceClientById = async function (token, status) {
+const registerTransaction = async function (token, data) {
     const SECRETE = message.REQUIRE_SECRETE;
-    const statusService = Number(status);
-    if (isNaN(statusService) && statusService > 5 || statusService < 1) {
+    if (!(0, validateRegisterTransaction_1.validateTypesJson)(data)) {
+        return message.ERRO_REQUIRED_DATA_CLIENTE;
+    }
+    else if (data.typeTransactionId > 4 || data.typeTransactionId < 1) {
         return {
             status: 422,
-            message: { status: 422, message: "Atenção o id para filtro do tipo de serviço está inválido" }
+            message: "Inválido o id do tipo de transação. Obs: Ele deve estar entre 1 a 4."
         };
     }
     try {
         const decoded = jwt.verify(Array.isArray(token) ? token[0] : token, SECRETE);
         const { id, name } = decoded;
-        const service = await (0, getServiceClientById_1.dbGetServiceByID)(Number(id), statusService);
-        if (service) {
+        let decodedToken = {
+            id: id,
+            name: name
+        };
+        const statusTransaction = (0, registerTransactionClientById_1.dbRegisterTransactionService)(decodedToken, data);
+        if (typeof statusTransaction === "number" && statusTransaction === 404) {
             return {
-                status: 201,
-                data: service
+                status: 422,
+                message: "Erro, verique se o id do serviço pertence ao cliente e tente novamente."
             };
         }
-        else {
-            return message.ERRO_INTERNAL_SERVER;
+        else if (typeof statusTransaction === "boolean" && statusTransaction) {
+            return {
+                status: 201,
+                message: "Registro salvo com sucesso"
+            };
         }
     }
     catch (error) {
-        return message.ERRO_INTERNAL_SERVER;
     }
 };
-exports.getAllServiceClientById = getAllServiceClientById;

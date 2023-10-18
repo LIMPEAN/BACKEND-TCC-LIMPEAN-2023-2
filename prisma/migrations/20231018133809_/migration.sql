@@ -202,7 +202,6 @@ CREATE TABLE `tbl_diarista_servico` (
 CREATE TABLE `tbl_transacao` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `valor` VARCHAR(45) NOT NULL,
-    `tipo` VARCHAR(45) NOT NULL,
     `comprovante` TEXT NOT NULL,
     `id_servico` INTEGER NOT NULL,
     `id_tipo_trasacao` INTEGER NOT NULL,

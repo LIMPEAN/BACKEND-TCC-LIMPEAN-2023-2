@@ -21,8 +21,6 @@ const dbVerifyTokenService = async function (idClient, idService, token) {
                 }
             }
         });
-        console.log(token);
-        console.log(serviceClient?.FK_TokenServico_Servico.codigo);
         if (serviceClient && serviceClient.FK_ResidenciaCliente_Servico.id_cliente === idClient &&
             serviceClient.FK_TokenServico_Servico.codigo === token) {
             return true;

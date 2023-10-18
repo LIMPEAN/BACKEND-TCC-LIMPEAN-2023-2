@@ -34,16 +34,10 @@ const dbRegisterService = async (token, data) => {
                 id: data.diaristId !== null ? data.diaristId : 0
             }
         });
-        const verifyService = await prisma.tbl_servico.findFirst({
-            where: {
-                data_hora: `${data.date}T${data.startHour}:00Z`,
-                id_residencia_cliente: verifyAddress?.id
-            }
-        });
         if (data.diaristId === null || (typeof data.diaristId === "number" && verifyDiarist)) {
             statusDiarist = true;
         }
-        if (verifyClient && verifyAddress && verifyService === null && statusDiarist) {
+        if (verifyClient && verifyAddress && statusDiarist) {
             let transaction = await prisma.$transaction(async (prisma) => {
                 const tokenService = await prisma.tbl_token_servico.create({
                     data: {

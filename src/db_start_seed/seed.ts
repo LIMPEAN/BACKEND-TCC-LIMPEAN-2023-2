@@ -201,6 +201,25 @@ const insertStatusService = async function () {
     }
 }
 
+const insertTypePayment = async function () {
+    const typePayment = ["Pix", "Débito", "Crédito", "Boleto"]
+
+    for (const it of typePayment) {
+
+        const statusPayment = await prisma.tbl_tipo_transacao.findFirst({
+            where: {nome: it}
+        })
+
+        if(!statusPayment){
+            await prisma.tbl_tipo_transacao.create({
+                data: {
+                    nome: it
+                }
+            })
+        }
+    }
+}
+
 insertGender()
     .then(() => {
         console.log("Inserção de gêneros concluído com sucesso");
@@ -290,6 +309,17 @@ insertStatusService()
 })
 .catch((error) => {
     console.log("Erro ao inserir os tipos de status do serviço.");
+})
+.finally(async () => {
+    await prisma.$disconnect()
+})
+
+insertTypePayment()
+.then(() => {
+    console.log("Inserção dos tipos de pagamento concluido com sucesso.");
+})
+.catch((error) => {
+    console.log("Erro ao inserir os tipos de pagamento");
 })
 .finally(async () => {
     await prisma.$disconnect()

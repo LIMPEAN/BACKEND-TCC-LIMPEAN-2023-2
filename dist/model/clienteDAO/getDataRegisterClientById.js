@@ -42,8 +42,15 @@ const getDataRegisterClientById = async function (id, name) {
             where: {
                 id_cliente: id,
             }, select: {
+                data_hora: true,
                 comentario: true,
-                quantidade_estrelas: true
+                quantidade_estrelas: true,
+                FK_Diarista_AvaliacaoCliente: {
+                    select: {
+                        nome: true,
+                        foto_perfil: true
+                    }
+                }
             }
         });
         const phone = await prisma.tbl_telefone_cliente.findMany({
@@ -99,8 +106,11 @@ const getDataRegisterClientById = async function (id, name) {
                     numero: it.numero_telefone
                 })),
                 assessement: assessmentClient.map((it) => ({
+                    name: it.FK_Diarista_AvaliacaoCliente.nome,
+                    photo: it.FK_Diarista_AvaliacaoCliente.foto_perfil,
                     stars: it.quantidade_estrelas,
-                    comment: it.comentario
+                    comment: it.comentario,
+                    dataHour: it.data_hora
                 })),
                 endereco: address.map((it) => ({
                     id_address: it.FK_Endereco_Residencia.id,
