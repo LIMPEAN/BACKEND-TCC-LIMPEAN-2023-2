@@ -219,7 +219,7 @@ router.put('/v1/limpean/client/update/register/address', verifyJWT, jsonParser, 
 })
 
 //EndPoint para cadastrar um servico
-router.post('/v1/limpean/client/cadastro/servico', verifyJWT, jsonParser, async function (request, response){
+router.post('/v1/limpean/client/register/service', verifyJWT, jsonParser, async function (request, response){
 
         const token = request.headers['x-api-key']
         const dataBody = request.body
@@ -230,6 +230,15 @@ router.post('/v1/limpean/client/cadastro/servico', verifyJWT, jsonParser, async 
 
 })
 
+//EndPoint para atualizar o preço do serviço
+router.put('/v1/limpean/client/service', verifyJWT, jsonParser, async function (request, response) {
+
+    const token = request.headers['x-api-key']
+    const dataBody = request.body 
+    
+})
+
+//EndPoint para cadastrar um comprovante de pagamento
 router.post('/v1/limpean/client/register/transaction', verifyJWT, jsonParser, async function (request, response){
 
     const token = request.headers['x-api-key']

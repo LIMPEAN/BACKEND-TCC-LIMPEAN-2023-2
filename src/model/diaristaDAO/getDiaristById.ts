@@ -113,6 +113,7 @@ const getDiaristById = async function (id: number) {
                         city: it.FK_Endereco_Diarista.FK_Cidade_Endereco.nome,
                         publicPlace: it.FK_Endereco_Diarista.logradouro,
                         district: it.FK_Endereco_Diarista.bairro,
+                        numberHouse: it.FK_Endereco_Diarista.numero_residencia,
                         cep: it.FK_Endereco_Diarista.cep,
                         complement: it.FK_Endereco_Diarista.complemento
                     }]
