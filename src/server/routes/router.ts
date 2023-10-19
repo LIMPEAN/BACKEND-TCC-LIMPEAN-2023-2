@@ -14,6 +14,7 @@ import { deleteRegisterClient } from "../../controller/controllerCliente/deleteR
 import { getStatusTokenClient } from "../../controller/controllerCliente/getStatusTokenService/controllerTokenServiceClient"
 import { getAllServiceClientById } from "../../controller/controllerCliente/getAllServiceCliente/controllerGetServiceClientById"
 import { registerTransaction } from "../../controller/controllerCliente/registerTransactionService/controllerRegisterTransactionService"
+import { updateRegisterService} from "../../controller/controllerCliente/updateService/controllerUpdateServiceClient"
 import { updateDataDiarist } from "../../controller/controllerDiarista/updateDataPersonalDiarist/controllerUpdateDataPersonalDiarist"
 import { getTokenService } from "../../controller/controllerDiarista/getTokenService/controllerGetTokenService"
 import { updateDataClient } from "../../controller/controllerCliente/updateDataPersonalClient/controllerUpdateDataPersonalClient"
@@ -236,6 +237,9 @@ router.put('/v1/limpean/client/service', verifyJWT, jsonParser, async function (
     const token = request.headers['x-api-key']
     const dataBody = request.body 
     
+    const statusService = await updateRegisterService(token as string, dataBody)
+    response.status(statusService.status)
+    response.json(statusService)
 })
 
 //EndPoint para cadastrar um comprovante de pagamento

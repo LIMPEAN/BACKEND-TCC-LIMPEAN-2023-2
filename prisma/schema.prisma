@@ -187,13 +187,11 @@ model tbl_status_conta_cliente {
 model tbl_servico {
   id                    Int @id @default(autoincrement())
   data_hora             DateTime @db.DateTime()
-  //servico_agendado    Boolean
   tarefas_adicionais    String? @db.Text
   observacao            String? @db.Text
   id_residencia_cliente Int
   id_tipo_limpeza       Int
   id_token_servico      Int
-  // id_checklist       Int
   codigo                tbl_codigo[]
   diaristaServico       tbl_diarista_servico[]   
   transacao             tbl_transacao[]
@@ -205,7 +203,6 @@ model tbl_servico {
   FK_ResidenciaCliente_Servico  tbl_residencia_cliente @relation(fields: [id_residencia_cliente], references: [id])
   FK_TipoLimpeza_Servico        tbl_tipo_limpeza @relation(fields: [id_tipo_limpeza], references: [id])
   FK_TokenServico_Servico       tbl_token_servico @relation(fields: [id_token_servico], references: [id])
-  // FK_Checklist_Servico          tbl_checklist @relation(fields: [id_checklist], references: [id])
 
   @@unique([id])
 }
