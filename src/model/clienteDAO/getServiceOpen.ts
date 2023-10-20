@@ -152,13 +152,13 @@ const getServiceOpen = async function () {
 
         //Reponsavel por filtrar serviços em aberto
 
-        // const allServiceOpen = serviceClient.filter(client => {
-        //     const status = client.client.status_service
-        //     return status.some(status => status.status === "Em aberto")
-        // })
+        const allServiceOpen = serviceClient.filter(client => {
+            const status = client.service.status_service
+            return status.every(status => status.status === "Em aberto")
+        })
                 
-        if(serviceClient.length > 0){            
-            return serviceClient
+        if(allServiceOpen.length > 0){            
+            return allServiceOpen
         }else{            
             return false
         }
