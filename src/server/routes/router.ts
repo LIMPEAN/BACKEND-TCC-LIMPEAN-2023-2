@@ -10,6 +10,7 @@ import { dataDiaristById } from "../../controller/controllerDiarista/dataDiarist
 import { dataAllDiarist } from "../../controller/controllerDiarista/dataDiarist/controllerDataAllDiarist"
 import { deleteRegisterDiarist } from "../../controller/controllerDiarista/deleteRegisterDiarist/controllerDeleteRegisterDiarist"
 import { getInvitationById } from "../../controller/controllerDiarista/getAllServiceEspecific/controllerInvitationById"
+import { updatePriceServiceDiarist } from "../../controller/controllerDiarista/updateService/controllerUpdateServiceClient"
 import { deleteRegisterClient } from "../../controller/controllerCliente/deleteRegisterClient/controllerDeleteRegisterClient"
 import { getStatusTokenClient } from "../../controller/controllerCliente/getStatusTokenService/controllerTokenServiceClient"
 import { getAllServiceClientById } from "../../controller/controllerCliente/getAllServiceCliente/controllerGetServiceClientById"
@@ -395,6 +396,17 @@ router.put('/v1/limpean/diarist/schedule-service', verifyJWT, jsonParser, async 
     response.status(statusService.status)
     response.json(statusService)
     
+})
+
+router.put('/v1/limpean/diarist/service/price', verifyJWT, jsonParser, async function(request, response){
+
+    const token = request.headers['x-api-key']
+    const dataBody = request.body     
+    
+    const statusService = await updatePriceServiceDiarist(token as string, dataBody)
+    response.status(statusService.status)
+    response.json(statusService)
+
 })
 
 // router.get('/v1/limpean/diarist/service/access', verifyJWT, async function (request, response){
