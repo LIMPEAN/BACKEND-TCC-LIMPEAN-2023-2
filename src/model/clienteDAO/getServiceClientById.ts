@@ -20,6 +20,7 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
             }, select: {
                 id: true,
                 data_hora: true,
+                convite: true,
                         observacao: true,
                         tarefas_adicionais: true,
                         FK_TipoLimpeza_Servico: {
@@ -126,6 +127,7 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
             serviceClient.push({
                 service: {
                     serviceId: it.id,
+                    isInvitation: it.convite,
                     status_service: statusService.map((it) => ({
                         status: it.FK_Status_StatusServico.nome,
                         data_hora: it.data_hora,

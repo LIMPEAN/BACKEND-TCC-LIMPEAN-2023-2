@@ -55,6 +55,11 @@ const dbRegisterService = async (token: Token, data: Service) => {
             statusDiarist = true
         }
 
+        let isInvitation = true
+        if(data.diaristId === null){
+            isInvitation = false
+        }
+
         if (verifyClient && verifyAddress && statusDiarist) {
             let transaction = await prisma.$transaction(async (prisma) => {
 
@@ -68,6 +73,7 @@ const dbRegisterService = async (token: Token, data: Service) => {
                     data: {
                         data_hora: `${data.date}T${data.startHour}:00Z`,
                         tarefas_adicionais: data.additionalTasks,
+                        convite: isInvitation,
                         observacao: data.observation,
                         id_residencia_cliente: verifyAddress.id,
                         id_tipo_limpeza: data.typeCleaningId,
