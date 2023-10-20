@@ -68,7 +68,7 @@ const registerUser = async function (dataBody: Diarista) {
                     data: {
                         nome: dataBody.nameUser,
                         cpf: dataBody.cpf,
-                        data_nascimento: new Date(dataBody.birthDate),
+                        data_nascimento: new Date(dataBody.birthDate.replace(/\//g, '-')),
                         biografia: dataBody.biography,
                         media_valor: dataBody.averagePrice,
                         foto_perfil: dataBody.photoUser,

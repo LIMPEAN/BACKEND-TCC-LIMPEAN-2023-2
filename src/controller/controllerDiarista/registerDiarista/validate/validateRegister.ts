@@ -113,10 +113,15 @@ function validateEmail(email:string) {
 function validateDateBirth(dataNascimento: string){
 
     let status = true
-    // Verifica se a data de nascimento é válida
-    const dataNascRegex = /^\d{4}-\d{2}-\d{2}$/;
-    if (!dataNascimento.match(dataNascRegex)) {
-        return false;
+
+    //Data no formato YYYY-MM-DD
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/    
+
+    //Data no formato YYYY/MM/DD
+    const dateRegexBar = /^\d{4}\/\d{2}\/\d{2}$/
+
+    if (!dataNascimento.match(dateRegex) && !dataNascimento.match(dateRegexBar)) {
+        status = false
     }
     return status
 }

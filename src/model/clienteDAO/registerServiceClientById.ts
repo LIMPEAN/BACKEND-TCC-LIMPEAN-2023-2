@@ -71,7 +71,7 @@ const dbRegisterService = async (token: Token, data: Service) => {
                 
                 const service = await prisma.tbl_servico.create({
                     data: {
-                        data_hora: `${data.date}T${data.startHour}:00Z`,
+                        data_hora: `${data.date.replace(/\//g, '-')}T${data.startHour}:00Z`,
                         tarefas_adicionais: data.additionalTasks,
                         convite: isInvitation,
                         observacao: data.observation,
@@ -142,7 +142,7 @@ const dbRegisterService = async (token: Token, data: Service) => {
                     data: {
                         id_servico: service.id,
                         id_status: 1,
-                        data_hora: `${data.date}T${data.startHour}:00Z`
+                        data_hora: `${data.date.replace(/\//g, '-')}T${data.startHour}:00Z`
                     }
                 })
 
@@ -176,6 +176,8 @@ const dbRegisterService = async (token: Token, data: Service) => {
 
         return true
     } catch (error) {
+        console.log(error);
+        
         return false
     }
 }

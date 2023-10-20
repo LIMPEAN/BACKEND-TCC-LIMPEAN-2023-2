@@ -45,7 +45,7 @@ const verifyJWT = async function(request: Request, response: Response, next: Nex
     
     const SECRETE = message.REQUIRE_SECRETE;
 
-    if (!token) {                
+    if (!token) {                        
         return response.status(401).json(message.ERRO_REQUIRED_TOKEN);
     }
 
@@ -54,7 +54,7 @@ const verifyJWT = async function(request: Request, response: Response, next: Nex
         jwt.verify(Array.isArray(token) ? token[0] : token, SECRETE)
 
         next();
-    } catch (error) {                
+    } catch (error) {                        
         return response.status(401).json(message.ERRO_INVALID_TOKEN)
     }
 }
@@ -89,7 +89,7 @@ router.post('/v1/limpean/login', jsonParser, async function (request, response) 
 
     if(contentType === 'application/json'){
         
-        const dataBody = request.body
+        const dataBody = request.body        
         
         const statusLogin = await loginTypeUser(dataBody)
 
@@ -164,7 +164,7 @@ router.get('/v1/limpean/client', verifyJWT, async function(request, response){
     
     const token = request.headers['x-api-key']
     const statusClient = await getDataClient(token as string)
-
+    
     response.status(statusClient.status)
     response.json(statusClient)
     
@@ -234,7 +234,7 @@ router.post('/v1/limpean/client/register/service', verifyJWT, jsonParser, async 
 router.put('/v1/limpean/client/service', verifyJWT, jsonParser, async function (request, response) {
 
     const token = request.headers['x-api-key']
-    const dataBody = request.body 
+    const dataBody = request.body     
     
     const statusService = await updateRegisterService(token as string, dataBody)
     response.status(statusService.status)
@@ -401,7 +401,7 @@ router.put('/v1/limpean/diarist/schedule-service', verifyJWT, jsonParser, async 
 router.put('/v1/limpean/diarist/service/price', verifyJWT, jsonParser, async function(request, response){
 
     const token = request.headers['x-api-key']
-    const dataBody = request.body     
+    const dataBody = request.body         
     
     const statusService = await updatePriceServiceDiarist(token as string, dataBody)
     response.status(statusService.status)

@@ -26,7 +26,7 @@ const dbRegisterAssessmentClient = async function(token: Token, data: Assessemen
             where: {
                 id_diarista: verifyDiarist?.id,
                 id_cliente: verifyClient?.id,
-                data_hora: `${data.date}T${data.hour}:00Z`
+                data_hora: `${data.date.replace(/\//g, '-')}T${data.hour}:00Z`
             }
         })
 
@@ -38,7 +38,7 @@ const dbRegisterAssessmentClient = async function(token: Token, data: Assessemen
                     id_diarista: data.personEvaluatedId,
                     quantidade_estrelas: data.star,
                     comentario: data.comment,
-                    data_hora: `${data.date}T${data.hour}:00Z`
+                    data_hora: `${data.date.replace(/\//g, '-')}T${data.hour}:00Z`
                 }
             })
 

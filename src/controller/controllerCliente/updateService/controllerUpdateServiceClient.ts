@@ -11,10 +11,15 @@ const updateRegisterService = async function(token: string, data: UpdateService)
 
     if(!validate.validateTypesJson){
         return message.ERRO_REQUIRED_DATA_CLIENTE
-    }else if(!validate.validateValueMonetary(data.newValue)){
+    }else if(!validate.validateValueMonetary(data.newValue) && data.newValue !== null){
         return  {
             status: 422,
             message: "Valor monetario no formato inválido. Ex: 100.00 ou 100,00"
+        }
+    }else if(data.schedule && !validate.validateDate(data.date) && !validate.validateHour(data.hour)){
+        return {
+            status: 422,
+            message: "Data ou hora no formato inválido. Ex: YYYY-MM-DD ou YYYY/MM/DD ou Ex: 12:00"
         }
     }
 
@@ -32,7 +37,7 @@ const updateRegisterService = async function(token: string, data: UpdateService)
         if(typeof statusService === "number" && statusService === 404){
             return {
                 status: 422,
-                message: "Erro, verifique se o serviço pertense ao cliente. Obs: Somente será possivel atualizar serviços com status em aberto."
+                message: "Erro, verifique se o serviço pertence ao cliente. Obs: Somente será possivel atualizar serviços com status em aberto."
             }
         }else if(typeof statusService === "boolean" && statusService){            
             return message.UPDATE_USER

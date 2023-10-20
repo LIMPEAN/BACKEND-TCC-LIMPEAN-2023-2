@@ -26,7 +26,34 @@ const validateValueMonetary = (value: string) => {
     return false; // Valor monetário inválido
 }
 
+function validateHour(hour: string) {
+  
+  const regexHora = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+
+  if (regexHora.test(hour)) {      
+    return true
+  } else {
+    return false
+  }
+}
+
+const validateDate = (date: string) => {
+
+  let status = true
+
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/    
+
+  const dateRegexBar = /^\d{4}\/\d{2}\/\d{2}$/
+
+  if (!date.match(dateRegex) && !date.match(dateRegexBar)) {
+      return false
+  }
+  return status
+}
+
 export{ 
     validateTypesJson,
-    validateValueMonetary
+    validateValueMonetary,
+    validateDate,
+    validateHour
 }

@@ -28,14 +28,15 @@ const dbUpdateService = async function(token: Token, data: UpdateService){
                     },
                 },
             },
-        })           
+        })              
 
         if(verifyServiceAndClient.length > 0 && verifyServiceAndClient.every(
             it => it.FK_Servico_StatusServico.FK_ResidenciaCliente_Servico.FK_Cliente_Residencia.email === token.name) &&
-            verifyServiceAndClient.every(it => it.FK_Servico_StatusServico.FK_ResidenciaCliente_Servico.FK_Cliente_Residencia.id) &&
+            verifyServiceAndClient.every(it => it.FK_Servico_StatusServico.FK_ResidenciaCliente_Servico.FK_Cliente_Residencia.id === Number(token.id) &&
             verifyServiceAndClient.every(it => it.id_status === 1)
-            ){                
-                                
+            )){                
+                
+                if(typeof data.newValue === "string")
                 await prisma.tbl_servico_com_valor.updateMany({
                     where: {
                         id_servico: data.idService
@@ -44,13 +45,26 @@ const dbUpdateService = async function(token: Token, data: UpdateService){
                         valor: data.newValue
                     }
                 })  
+                
+                if(data.schedule && verifyServiceAndClient.every((it) => it.id_status !== 2))
+                
+                await prisma.tbl_status_servico.create({
+                data: {
+                    id_servico: data.idService,
+                    data_hora: `${data.date.replace(/\//g, '-')}T${data.hour}:00Z`,
+                    id_status: 2
+                }
+                
+            })
 
                 return true
 
-            }else{
+            }else{                
                 return 404
             }
     } catch (error) {
+        console.log(error);
+        
         return false
     }finally {
         await prisma.$disconnect()
