@@ -1,5 +1,5 @@
 import { Token } from "../../interfaceGlobal/token"
-import { UpdateService } from "../../controller/controllerCliente/updateService/interface/updateService"
+import { UpdateService } from "../../controller/controllerDiarista/updateService/interface/updateService"
 import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
