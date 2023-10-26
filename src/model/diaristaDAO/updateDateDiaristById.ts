@@ -12,47 +12,47 @@ function isObjectEmpty(obj: Record<string, any>): boolean {
 }
 
 
-const verifyPhoneDiarist = async function(token: TokenPayLoad, oldDDD: any, oldPhone: any, newDDD: any , newPhone: any){
-    try {
-        const verifyDiarist = await prisma.tbl_diarista.findFirst({
-            where: {
-                AND: [
-                    { email: token.name.toLowerCase() },
-                    { id: Number(token.id) }
-                ]
-            }
-        })        
+// const verifyPhoneDiarist = async function(token: TokenPayLoad, oldDDD: any, oldPhone: any, newDDD: any , newPhone: any){
+//     try {
+//         const verifyDiarist = await prisma.tbl_diarista.findFirst({
+//             where: {
+//                 AND: [
+//                     { email: token.name.toLowerCase() },
+//                     { id: Number(token.id) }
+//                 ]
+//             }
+//         })        
 
-        if (verifyDiarist) {             
-           const tbl_telefone_diarista = await prisma.tbl_telefone_diarista.findFirst({
-                    where: {
-                        id_diarista: verifyDiarist.id,
-                        ddd: oldDDD,
-                        numero_telefone: oldPhone
-                    }
-                }) 
+//         if (verifyDiarist) {             
+//            const tbl_telefone_diarista = await prisma.tbl_telefone_diarista.findFirst({
+//                     where: {
+//                         id_diarista: verifyDiarist.id,
+//                         ddd: oldDDD,
+//                         numero_telefone: oldPhone
+//                     }
+//                 }) 
                 
-                const tbl_telefone_diarista_new = await prisma.tbl_telefone_diarista.findFirst({
-                    where: {
-                        id_diarista: verifyDiarist.id,
-                        ddd: newDDD,
-                        numero_telefone: newPhone
-                    }
-                })                
-                if(tbl_telefone_diarista && tbl_telefone_diarista_new === null){                                                                                
-                    return true
-                }else{                                        
-                    return false
-                }
-        } else {            
-            return false
-        }
-    } catch (error) {                        
-        return false
-    } finally {
-        await prisma.$disconnect()
-    }
-}
+//                 const tbl_telefone_diarista_new = await prisma.tbl_telefone_diarista.findFirst({
+//                     where: {
+//                         id_diarista: verifyDiarist.id,
+//                         ddd: newDDD,
+//                         numero_telefone: newPhone
+//                     }
+//                 })                
+//                 if(tbl_telefone_diarista && tbl_telefone_diarista_new === null){                                                                                
+//                     return true
+//                 }else{                                        
+//                     return false
+//                 }
+//         } else {            
+//             return false
+//         }
+//     } catch (error) {                        
+//         return false
+//     } finally {
+//         await prisma.$disconnect()
+//     }
+// }
 
 const updateDataSimpleDiarist = async function (token: TokenPayLoad, data: any) {
 
@@ -201,6 +201,5 @@ const updateDataAddressDiarist = async function (token: TokenPayLoad, data: any)
 export {
     updateDataSimpleDiarist,
     updateDataPhone,
-    verifyPhoneDiarist,
     updateDataAddressDiarist
 }

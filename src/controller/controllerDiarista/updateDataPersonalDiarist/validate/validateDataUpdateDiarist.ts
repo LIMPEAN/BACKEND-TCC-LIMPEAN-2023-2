@@ -1,5 +1,4 @@
 import { validatePhoneWithDDD } from "../../registerDiarista/validate/validateRegister"
-import { verifyPhoneDiarist } from "../../../../model/diaristaDAO/updateDateDiaristById";
 
 interface UpdateDataDiarist {
     name: string | null;
@@ -65,12 +64,12 @@ const checkDataDiarist =  async function (data: UpdateDataDiarist, token: TokenP
             status = false
         }
 
-        for (const phone of data.phones) {
-            if (!(await verifyPhoneDiarist(token, phone.ddd, phone.phone, phone.newDDD, phone.newPhone))) {
-                status = false;                
-                break; // Para a iteração se encontrar um erro
-            }
-        }        
+        // for (const phone of data.phones) {
+        //     if (!(await verifyPhoneDiarist(token, phone.ddd, phone.phone, phone.newDDD, phone.newPhone))) {
+        //         status = false;                
+        //         break; // Para a iteração se encontrar um erro
+        //     }
+        // }        
         
     }
 
