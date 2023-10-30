@@ -64,7 +64,7 @@ router.post('/v1/limpean/cadastro', jsonParser, async function (request: Request
     
     let contentType = request.headers['content-type']
 
-    if (contentType === 'application/json') {
+   
 
         const dataBody = request.body
 
@@ -77,17 +77,13 @@ router.post('/v1/limpean/cadastro', jsonParser, async function (request: Request
         else {
             response.send(message.ERRO_REGISTER_USER)
         }
-    } else {
-        return response.send(message.ERROR_INVALID_CONTENT_TYPE)
-    }
+     
+        //return response.send(message.ERROR_INVALID_CONTENT_TYPE)
+    
 })
 
 /***************************************** Login Cliente e Diarista ***********************************/
 router.post('/v1/limpean/login', jsonParser, async function (request, response) {
-
-    const contentType = request.headers['content-type']
-
-    if(contentType === 'application/json'){
         
         const dataBody = request.body        
         
@@ -96,10 +92,10 @@ router.post('/v1/limpean/login', jsonParser, async function (request, response) 
         if(statusLogin){
             response.status(statusLogin.status)
             response.json(statusLogin)
-        }else{
-            response.send(message.ERRO_INTERNAL_SERVER)
         }
-    }
+        
+        //response.send(message.ERRO_INTERNAL_SERVER)
+        
 })
 
 /******************************************** Avaliação do Cliente e do Diarista *************************/
@@ -187,9 +183,6 @@ router.put('/v1/limpean/client', verifyJWT, jsonParser, async function (request,
 //EndPoint para cadastrar um novo endereço
 router.post('/v1/limpean/client/new/register/address', verifyJWT, jsonParser, async function (request, response) {
 
-    const contentType = request.headers['content-type']
-
-    if (contentType === 'application/json') {
         const dataBody = request.body
         const token = request.headers['x-api-key']
       
@@ -201,7 +194,6 @@ router.post('/v1/limpean/client/new/register/address', verifyJWT, jsonParser, as
         } else {
             response.send(message.ERRO_INTERNAL_SERVER)
         }
-    }
 })
 
 //EndPoint para atualizar um endereço específico da residencia do cliente
