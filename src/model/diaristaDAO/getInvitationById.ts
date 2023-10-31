@@ -119,6 +119,7 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
             serviceClient.push({
                 client: {
                     serviceId: it.id,
+                    clientId: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Cliente_Residencia.id,
                     status_service: statusService.map((it) => ({
                         status: it.FK_Status_StatusServico.nome,
                         data_hora: it.data_hora,
