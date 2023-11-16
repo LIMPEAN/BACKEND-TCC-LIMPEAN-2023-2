@@ -1,19 +1,17 @@
-import { PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient()
-
-const dbGetServiceByID = async function (id: number, statusTypeService: any) {
-        
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.dbGetServiceByID = void 0;
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
+const dbGetServiceByID = async function (id, statusTypeService) {
     try {
-
         const client = await prisma.tbl_residencia_cliente.findMany({
             where: {
                 id_cliente: id
             }
-        })        
-        
+        });
         const service = await prisma.tbl_servico.findMany({
-            where:{
+            where: {
                 id_residencia_cliente: {
                     in: client.map(it => it.id)
                 }
@@ -21,36 +19,36 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                 id: true,
                 data_hora: true,
                 convite: true,
-                        observacao: true,
-                        tarefas_adicionais: true,
-                        FK_TipoLimpeza_Servico: {
+                observacao: true,
+                tarefas_adicionais: true,
+                FK_TipoLimpeza_Servico: {
+                    select: {
+                        nome: true
+                    }
+                },
+                FK_ResidenciaCliente_Servico: {
+                    select: {
+                        FK_Cliente_Residencia: {
                             select: {
-                                nome: true
+                                id: true,
+                                nome: true,
+                                biografia: true,
+                                foto_perfil: true
                             }
                         },
-                        FK_ResidenciaCliente_Servico: {
+                        FK_Endereco_Residencia: {
                             select: {
-                                FK_Cliente_Residencia: {
+                                logradouro: true,
+                                bairro: true,
+                                numero_residencia: true,
+                                complemento: true,
+                                cep: true,
+                                FK_Cidade_Endereco: {
                                     select: {
-                                        id: true,
                                         nome: true,
-                                        biografia: true,
-                                        foto_perfil: true
-                                    }
-                                },
-                                FK_Endereco_Residencia: {
-                                    select: {
-                                        logradouro: true,
-                                        bairro: true,
-                                        numero_residencia:  true,
-                                        complemento: true,
-                                        cep: true,
-                                        FK_Cidade_Endereco: {
+                                        FK_Estado_Cidade: {
                                             select: {
                                                 nome: true,
-                                                FK_Estado_Cidade: {
-                                                    select: {
-                                                    nome: true,
                                             }
                                         },
                                     },
@@ -60,12 +58,9 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                     },
                 },
             },
-        })
-
-        const serviceClient = []
-
-        for (const it of service){
-
+        });
+        const serviceClient = [];
+        for (const it of service) {
             const serviceValue = await prisma.tbl_servico_com_valor.findFirst({
                 where: {
                     id_servico: it.id,
@@ -73,8 +68,7 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                 select: {
                     valor: true,
                 },
-            })
-
+            });
             const serviceRoom = await prisma.tbl_servico_comodo.findMany({
                 where: {
                     id_servico: it.id,
@@ -86,8 +80,7 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                         },
                     },
                 },
-            })
-
+            });
             const form = await prisma.tbl_formulario.findMany({
                 where: {
                     id_servico: it.id
@@ -99,8 +92,7 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                         },
                     },
                 }
-            })
-
+            });
             const statusService = await prisma.tbl_status_servico.findMany({
                 where: {
                     id_servico: it.id,
@@ -112,8 +104,7 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                         },
                     },
                 }
-            })
-
+            });
             const transaction = await prisma.tbl_transacao.findFirst({
                 where: {
                     id_servico: it.id
@@ -126,8 +117,7 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                         }
                     }
                 }
-            })
-
+            });
             serviceClient.push({
                 service: {
                     serviceId: it.id,
@@ -152,7 +142,7 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                         name: it.FK_Comodo_ServicoComodo.nome,
                         quantity: it.quantidade,
                     })),
-                    address:{
+                    address: {
                         state: it.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.FK_Cidade_Endereco.FK_Estado_Cidade.nome,
                         city: it.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.FK_Cidade_Endereco.nome,
                         district: it.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.bairro,
@@ -160,59 +150,47 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                         complement: it.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.complemento,
                         publicPlace: it.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.logradouro,
                         houseNumber: it.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.numero_residencia
-                    }, 
+                    },
                     registerTransaction: {
                         value: transaction?.valor,
                         receipt: transaction?.comprovante,
                         typeTransaction: transaction?.FK_TipoTransacao_Transacao.nome
                     }
                 },
-            })
+            });
         }
-
         if (!isNaN(statusTypeService)) {
-            let filterService = ""
-          
+            let filterService = "";
             if (statusTypeService === 1) {
-              filterService = "Em aberto"
-            } else if (statusTypeService === 2) {
-              filterService = "Agendado"
-            } else if (statusTypeService === 3) {
-              filterService = "Em andamento"
-            } else if (statusTypeService === 4) {
-              filterService = "Finalizado"
-            } else if (statusTypeService === 5) {
-              filterService = "Cancelado"
+                filterService = "Em aberto";
             }
-          
+            else if (statusTypeService === 2) {
+                filterService = "Agendado";
+            }
+            else if (statusTypeService === 3) {
+                filterService = "Em andamento";
+            }
+            else if (statusTypeService === 4) {
+                filterService = "Finalizado";
+            }
+            else if (statusTypeService === 5) {
+                filterService = "Cancelado";
+            }
             const filterStatusServiceById = serviceClient.filter((client) => {
-              const statusArray = client.service.status_service;
-              
-              // Encontrar o índice do status atual no array
-              const currentIndex = statusArray.findIndex(
-                (status) => status.status === filterService
-              )
-
-              // Verificar se o status atual é o último no array
-              const isLastStatus = currentIndex === statusArray.length - 1;              
-          
-              // Se for o último status, incluir o cliente no resultado
-              return isLastStatus;
-            })
-          
+                const statusArray = client.service.status_service;
+                const currentIndex = statusArray.findIndex((status) => status.status === filterService);
+                const isLastStatus = currentIndex === statusArray.length - 1;
+                return isLastStatus;
+            });
             return filterStatusServiceById;
-          }
-
-        return serviceClient
-        
-    } catch (error) {        
-        return false
+        }
+        return serviceClient;
+    }
+    catch (error) {
+        return false;
     }
     finally {
-        await prisma.$disconnect()
+        await prisma.$disconnect();
     }
-}
-
-export {
-    dbGetServiceByID
-}
+};
+exports.dbGetServiceByID = dbGetServiceByID;
