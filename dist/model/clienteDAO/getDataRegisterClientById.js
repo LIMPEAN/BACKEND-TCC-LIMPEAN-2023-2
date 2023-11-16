@@ -53,6 +53,7 @@ const getDataRegisterClientById = async function (id, name) {
                 }
             }
         });
+        console.log(assessmentClient);
         const phone = await prisma.tbl_telefone_cliente.findMany({
             where: {
                 id_cliente: id

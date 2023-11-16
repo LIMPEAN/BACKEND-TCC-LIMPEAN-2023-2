@@ -29,9 +29,6 @@ import { updateStatusService } from "../../controller/controllerDiarista/updateS
 import * as message from "../../modulo/config"
 import * as jwt  from "jsonwebtoken"
 
-import { criptographyAllData } from "../../sercuryService/criptography"
-import { decripyAllData } from "../../sercuryService/criptography"
-
 const jsonParser = bodyParser.json()
 
 const router = Router()

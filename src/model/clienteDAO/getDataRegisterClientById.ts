@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-const getDataRegisterClientById = async function (id: number, name: string) {
+const getDataRegisterClientById = async function (id: number, name: string) {    
 
     try {
 
@@ -58,6 +58,8 @@ const getDataRegisterClientById = async function (id: number, name: string) {
                 }
             }
         })
+        console.log(assessmentClient);
+        
 
 
         const phone = await prisma.tbl_telefone_cliente.findMany({

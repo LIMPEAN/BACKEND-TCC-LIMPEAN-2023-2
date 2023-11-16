@@ -15,13 +15,13 @@ const dbRegisterAssessmentClient = async function (token, data) {
         });
         const verifyDiarist = await prisma.tbl_diarista.findFirst({
             where: {
-                id: Number(token.id)
+                id: data.personEvaluatedId
             }
         });
-        const verifyRegisterAssessment = await prisma.tbl_avaliacao_cliente.findFirst({
+        const verifyRegisterAssessment = await prisma.tbl_avaliacao_diarista.findFirst({
             where: {
                 id_diarista: verifyDiarist?.id,
-                id_cliente: verifyClient?.id,
+                id_client: verifyClient?.id,
                 data_hora: `${data.date.replace(/\//g, '-')}T${data.hour}:00Z`
             }
         });

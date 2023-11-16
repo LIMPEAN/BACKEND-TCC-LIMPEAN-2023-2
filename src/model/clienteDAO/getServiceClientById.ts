@@ -128,10 +128,17 @@ const dbGetServiceByID = async function (id: number, statusTypeService: any) {
                 }
             })
 
+            const getDiaristIdByService = await prisma.tbl_diarista_servico.findFirst({
+                where: {
+                    id_servico: it.id
+                }
+            })
+
             serviceClient.push({
                 service: {
                     serviceId: it.id,
                     isInvitation: it.convite,
+                    diaristId: getDiaristIdByService?.id_diarista,
                     status_service: statusService.map((it) => ({
                         status: it.FK_Status_StatusServico.nome,
                         data_hora: it.data_hora,
