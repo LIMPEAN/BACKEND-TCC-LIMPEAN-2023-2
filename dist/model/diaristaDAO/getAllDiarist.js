@@ -64,7 +64,13 @@ const getAllDiarist = async function () {
                     id_diarista: it.id
                 }, select: {
                     comentario: true,
-                    quantidade_estrelas: true
+                    quantidade_estrelas: true,
+                    FK_Cliente_AvaliacaoDiarista: {
+                        select: {
+                            nome: true,
+                            foto_perfil: true
+                        }
+                    }
                 }
             });
             diarist.push({
@@ -83,6 +89,8 @@ const getAllDiarist = async function () {
                     medium_value: it.media_valor,
                     gender: it.FK_Genero_Diarista.nome,
                     assessment: assessementDiarist.map((it) => ({
+                        name: it.FK_Cliente_AvaliacaoDiarista.nome,
+                        photo: it.FK_Cliente_AvaliacaoDiarista.foto_perfil,
                         stars: it.quantidade_estrelas,
                         comment: it.comentario
                     })),
