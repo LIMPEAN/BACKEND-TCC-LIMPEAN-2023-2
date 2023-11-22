@@ -37,6 +37,10 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
                                 },
                                 FK_Endereco_Residencia: {
                                     select: {
+                                        logradouro: true,
+                                        bairro: true,
+                                        numero_residencia: true,
+                                        complemento: true,
                                         cep: true,
                                         FK_Cidade_Endereco: {
                                             select: {
@@ -143,7 +147,11 @@ const dbGetInvitation = async function (id: number, statusTypeService: any) {
                     address:{
                         state: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.FK_Cidade_Endereco.FK_Estado_Cidade.nome,
                         city: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.FK_Cidade_Endereco.nome,
-                        cep: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.cep
+                        district: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.bairro,
+                        cep: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.cep,
+                        complement: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.complemento,
+                        publicPlace: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.logradouro,
+                        houseNumber: it.FK_Servico_DiaristaServico.FK_ResidenciaCliente_Servico.FK_Endereco_Residencia.numero_residencia
                     }, 
                 },
             })            
