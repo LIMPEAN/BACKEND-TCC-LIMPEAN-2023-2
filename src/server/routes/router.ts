@@ -21,6 +21,7 @@ import { getTokenService } from "../../controller/controllerDiarista/getTokenSer
 import { updateDataClient } from "../../controller/controllerCliente/updateDataPersonalClient/controllerUpdateDataPersonalClient"
 import { updateDataAddressClient } from "../../controller/controllerCliente/updateDataPersonalClient/controllerUpdateAddressClient"
 import { registerAddressCliente } from "../../controller/controllerCliente/registerAddresClient/controllerRegisterAddressClient"
+import { updateStatusServiceClient } from "../../controller/controllerCliente/updateService/controllerUpdateStatusServiceClient"
 import { getDataClient } from "../../controller/controllerCliente/getDataClient/controllerDataClientById"
 import { getDataAllServiceOpen } from "../../controller/controllerCliente/getAllServiceOpen/controllerDataAllServiceOpenClients"
 import { registerService } from "../../controller/controllerCliente/registerService/controllerRegisterServiceClient"
@@ -226,6 +227,18 @@ router.put('/v1/limpean/client/service', verifyJWT, jsonParser, async function (
     const dataBody = request.body     
     
     const statusService = await updateRegisterService(token as string, dataBody)
+    response.status(statusService.status)
+    response.json(statusService)
+})
+
+//EndPoint para atualizar o status do serviço para agendado
+router.put('/v1/limpean/client/service/status', verifyJWT, jsonParser, async function (request, response) {
+
+    const token = request.headers['x-api-key']
+    const dataBody = request.body  
+    console.log(dataBody);
+       
+    const statusService = await updateStatusServiceClient(token as string, dataBody)
     response.status(statusService.status)
     response.json(statusService)
 })

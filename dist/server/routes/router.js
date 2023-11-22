@@ -47,6 +47,7 @@ const controllerGetTokenService_1 = require("../../controller/controllerDiarista
 const controllerUpdateDataPersonalClient_1 = require("../../controller/controllerCliente/updateDataPersonalClient/controllerUpdateDataPersonalClient");
 const controllerUpdateAddressClient_1 = require("../../controller/controllerCliente/updateDataPersonalClient/controllerUpdateAddressClient");
 const controllerRegisterAddressClient_1 = require("../../controller/controllerCliente/registerAddresClient/controllerRegisterAddressClient");
+const controllerUpdateStatusServiceClient_1 = require("../../controller/controllerCliente/updateService/controllerUpdateStatusServiceClient");
 const controllerDataClientById_1 = require("../../controller/controllerCliente/getDataClient/controllerDataClientById");
 const controllerDataAllServiceOpenClients_1 = require("../../controller/controllerCliente/getAllServiceOpen/controllerDataAllServiceOpenClients");
 const controllerRegisterServiceClient_1 = require("../../controller/controllerCliente/registerService/controllerRegisterServiceClient");
@@ -153,6 +154,14 @@ router.put('/v1/limpean/client/service', verifyJWT, jsonParser, async function (
     const token = request.headers['x-api-key'];
     const dataBody = request.body;
     const statusService = await (0, controllerUpdateServiceClient_2.updateRegisterService)(token, dataBody);
+    response.status(statusService.status);
+    response.json(statusService);
+});
+router.put('/v1/limpean/client/service/status', verifyJWT, jsonParser, async function (request, response) {
+    const token = request.headers['x-api-key'];
+    const dataBody = request.body;
+    console.log(dataBody);
+    const statusService = await (0, controllerUpdateStatusServiceClient_1.updateStatusServiceClient)(token, dataBody);
     response.status(statusService.status);
     response.json(statusService);
 });
