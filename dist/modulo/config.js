@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ERRO_UPDATE_ADDRESS_CLIENT = exports.ERRO_INVALID_TOKEN = exports.ERRO_REQUIRED_TOKEN = exports.ERRO_REQUIRED_DATA_HOUSE_CLIENTE = exports.DELETE_USER = exports.ERRO_UPDATE_PHONE_USER = exports.ERRO_UPDATE_DATA_SIMPLE_DIARIST = exports.ERRO_UPDATE_USER = exports.ERRO_DELETE_USER = exports.ERRO_ADDRESS = exports.ERRO_NUMBER_PHONE = exports.ERRO_REQUIRE_CPF = exports.ERRO_REQUIRE_BIRTH_DATE = exports.ERRO_REGISTER_EMAIL = exports.UPDATE_USER = exports.CREATED_REGISTER = exports.ERRO_REGISTER_USER = exports.ERRO_REQUIRED_DATA_DIARISTA = exports.ERRO_REQUIRED_DATA_CLIENTE = exports.ERRO_NAME_PHOTO_PASSWORD = exports.ERRO_INTERNAL_SERVER = exports.ERRO_INVALID_TYPE_USER = exports.ERRO_INVALID_LOGIN_USER = exports.ERRO_INVALID_USER = exports.ERROR_INVALID_CONTENT_TYPE = exports.REQUIRE_SECRETE = void 0;
+exports.VERIFY_JWT = exports.ERRO_UPDATE_ADDRESS_CLIENT = exports.ERRO_INVALID_TOKEN = exports.ERRO_REQUIRED_TOKEN = exports.ERRO_REQUIRED_DATA_HOUSE_CLIENTE = exports.DELETE_USER = exports.ERRO_UPDATE_PHONE_USER = exports.ERRO_UPDATE_DATA_SIMPLE_DIARIST = exports.ERRO_UPDATE_USER = exports.ERRO_DELETE_USER = exports.ERRO_ADDRESS = exports.ERRO_NUMBER_PHONE = exports.ERRO_REQUIRE_CPF = exports.ERRO_REQUIRE_BIRTH_DATE = exports.ERRO_REGISTER_EMAIL = exports.UPDATE_USER = exports.CREATED_REGISTER = exports.ERRO_REGISTER_USER = exports.ERRO_REQUIRED_DATA_DIARISTA = exports.ERRO_REQUIRED_DATA_CLIENTE = exports.ERRO_NAME_PHOTO_PASSWORD = exports.ERRO_INTERNAL_SERVER = exports.ERRO_INVALID_TYPE_USER = exports.ERRO_INVALID_LOGIN_USER = exports.ERRO_INVALID_USER = exports.ERROR_INVALID_CONTENT_TYPE = exports.REQUIRE_SECRETE = void 0;
 const REQUIRE_SECRETE = "3oFEe4PtHxJeXsa7hY8WBFtCt1AJ4GwgqF6WARF1NG0mUnc89W";
 exports.REQUIRE_SECRETE = REQUIRE_SECRETE;
 const ERROR_INVALID_CONTENT_TYPE = { status: 415, message: 'O tipo de mídia (Content-Type) da solicitação não é compatível com o servidor. Esperado: application/json' };
@@ -53,3 +53,5 @@ const UPDATE_USER = { status: 201, message: "Registro atualizado com sucesso" };
 exports.UPDATE_USER = UPDATE_USER;
 const DELETE_USER = { status: 200, message: "Registro deletado com sucesso." };
 exports.DELETE_USER = DELETE_USER;
+const VERIFY_JWT = { status: 200, message: "Token verificado com sucesso." };
+exports.VERIFY_JWT = VERIFY_JWT;

@@ -57,12 +57,16 @@ const verifyJWT = async function(request: Request, response: Response, next: Nex
     }
 }
 
+
+router.get('/v1/limpean/verify/jwt', verifyJWT, async function(request: Request, response: Response){
+    
+    response.send(message.VERIFY_JWT)
+})
+
 /***************************************** Cadastro Cliente e Diarista *********************************/
 router.post('/v1/limpean/cadastro', jsonParser, async function (request: Request, response: Response) {
     
     let contentType = request.headers['content-type']
-
-   
 
         const dataBody = request.body
 

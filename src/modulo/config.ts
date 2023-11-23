@@ -34,6 +34,8 @@ const ERRO_INVALID_TOKEN = {status: 401, message: "Token inválido."}
 const CREATED_REGISTER = {status: 201, message: "Registro criado com sucesso."}
 const UPDATE_USER = {status: 201, message: "Registro atualizado com sucesso"}
 const DELETE_USER= {status: 200, message: "Registro deletado com sucesso."}
+const VERIFY_JWT= {status: 200, message: "Token verificado com sucesso."}
+
 
 export {
     REQUIRE_SECRETE,
@@ -61,5 +63,6 @@ export {
     ERRO_REQUIRED_DATA_HOUSE_CLIENTE,
     ERRO_REQUIRED_TOKEN,
     ERRO_INVALID_TOKEN,
-    ERRO_UPDATE_ADDRESS_CLIENT
+    ERRO_UPDATE_ADDRESS_CLIENT,
+    VERIFY_JWT
 }

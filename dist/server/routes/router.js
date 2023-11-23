@@ -72,6 +72,9 @@ const verifyJWT = async function (request, response, next) {
         return response.status(401).json(message.ERRO_INVALID_TOKEN);
     }
 };
+router.get('/v1/limpean/verify/jwt', verifyJWT, async function (request, response) {
+    response.send(message.VERIFY_JWT);
+});
 router.post('/v1/limpean/cadastro', jsonParser, async function (request, response) {
     let contentType = request.headers['content-type'];
     const dataBody = request.body;
