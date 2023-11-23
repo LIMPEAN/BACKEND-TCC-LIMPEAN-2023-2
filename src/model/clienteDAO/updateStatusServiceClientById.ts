@@ -43,8 +43,6 @@ const dbUpdateStatusService = async function(token: Token, data: UpdateStatusSer
                     data_hora: `${data.date.replace(/\//g, '-')}T${data.hour}:00Z`,
                     id_status: data.idStatus
                 }})
-
-                console.log("enr");
                 
                 return true
 
