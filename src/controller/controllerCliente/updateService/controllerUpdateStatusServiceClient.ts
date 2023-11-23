@@ -7,9 +7,9 @@ import { dbUpdateStatusService } from "../../../model/clienteDAO/updateStatusSer
 
 const updateStatusServiceClient = async (token: string, data: UpdateStatusService) => {
     
-    const SECRETE = message.REQUIRE_SECRETE
+    const SECRETE = message.REQUIRE_SECRETE    
     
-    if(typeof data.idService !== 'number' || typeof data.idStatus !== 'number' || data.idService < 1 || data.idService > 5){
+    if(typeof data.idService !== 'number' || typeof data.idStatus !== 'number' || data.idService < 1){
         return  {
             status: 422,
             message: "Atenção, o id do serviço e o id do status devem ser um número"

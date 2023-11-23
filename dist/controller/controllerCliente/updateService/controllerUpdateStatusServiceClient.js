@@ -30,7 +30,7 @@ const validate = __importStar(require("./validate/validateService"));
 const updateStatusServiceClientById_1 = require("../../../model/clienteDAO/updateStatusServiceClientById");
 const updateStatusServiceClient = async (token, data) => {
     const SECRETE = message.REQUIRE_SECRETE;
-    if (typeof data.idService !== 'number' || typeof data.idStatus !== 'number' || data.idService < 1 || data.idService > 5) {
+    if (typeof data.idService !== 'number' || typeof data.idStatus !== 'number' || data.idService < 1) {
         return {
             status: 422,
             message: "Atenção, o id do serviço e o id do status devem ser um número"
