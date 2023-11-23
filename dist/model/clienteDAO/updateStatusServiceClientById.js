@@ -37,7 +37,6 @@ const dbUpdateStatusService = async function (token, data) {
                     id_status: data.idStatus
                 }
             });
-            console.log("enr");
             return true;
         }
         else {

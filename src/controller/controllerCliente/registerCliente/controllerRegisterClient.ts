@@ -52,7 +52,12 @@ const registerCliente = async function (body: Cliente) {
 
         if (status) {
 
-            statusRegisterCliente = message.CREATED_REGISTER
+            statusRegisterCliente = {
+                status: 201,
+                message: "Registro criado com sucesso",
+                clientId: status
+            }
+
         } else {
 
             statusRegisterCliente = message.ERRO_REGISTER_USER

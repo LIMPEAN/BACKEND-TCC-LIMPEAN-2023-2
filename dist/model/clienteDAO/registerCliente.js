@@ -5,6 +5,7 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const registerUser = async function (dataBody) {
     let transaction;
+    let statusRegister = 0;
     try {
         const verifyClient = await prisma.tbl_cliente.findFirst({
             where: {
@@ -65,12 +66,13 @@ const registerUser = async function (dataBody) {
                         id_status_conta: 1
                     }
                 });
+                statusRegister = tbl_cliente.id;
             });
         }
         else {
             return false;
         }
-        return true;
+        return statusRegister;
     }
     catch (error) {
         return false;

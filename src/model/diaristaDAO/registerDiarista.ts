@@ -28,7 +28,8 @@ interface Diarista {
 
 const registerUser = async function (dataBody: Diarista) {
 
-    let transaction;
+    let transaction
+    let statusRegister = 0
 
     try {
 
@@ -95,12 +96,15 @@ const registerUser = async function (dataBody: Diarista) {
                     }
                 })
 
+                statusRegister = tbl_diarista.id
+
             })
 
         }else{
             return false
         }
-        return true
+
+        return statusRegister
     } catch (error) {
         console.log(error);
         

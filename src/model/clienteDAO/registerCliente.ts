@@ -29,6 +29,8 @@ interface Cliente {
 const registerUser = async function (dataBody: Cliente) {
 
     let transaction
+    let statusRegister = 0
+
     try {
 
         const verifyClient = await prisma.tbl_cliente.findFirst({
@@ -98,11 +100,14 @@ const registerUser = async function (dataBody: Cliente) {
                     }
                 })
 
+                statusRegister = tbl_cliente.id
+
             })
         } else {
             return false
         }
-        return true
+
+        return statusRegister
     } catch (error) {
         return false
     } finally {

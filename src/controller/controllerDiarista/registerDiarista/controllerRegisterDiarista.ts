@@ -54,7 +54,12 @@ const registerDiarista = async function (body: Diarista) {
 
         if (status) {
 
-            statusRegisterDiarista = message.CREATED_REGISTER
+            statusRegisterDiarista = {
+                status: 201,
+                message: "Registro criado com sucesso",
+                diaristId: status
+            }
+            
         } else {
 
             statusRegisterDiarista = message.ERRO_REGISTER_USER
