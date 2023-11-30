@@ -42,7 +42,7 @@ const dbUpdateServiceDiarist = async function(idDiarist: number, idService: numb
 
             return statusServiceClient
         }else{
-            if(idService !== 5 && idService !== 4 && idService !== 3){
+            if(idStatus !== 5 && idStatus !== 4 && idStatus !== 3){
                 await prisma.tbl_diarista_servico.updateMany({
                     where: {
                         id_servico: idService
